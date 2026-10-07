@@ -35,4 +35,5 @@ NS 차트(Nassi-Shneiderman Diagram) 편집기. Obsidian 플러그인 · 데스�
 1. `collab/sessions/YYYY-MM-DD-주제.md`에 논의 흐름, 결정, 발견한 위험, 다음 할 일을 적고 `collab/README.md` 목록에 추가한다.
 2. `collab/plan.md`의 다음 할 일과 열린 질문을 갱신한다.
 3. `journey/timeline.md`에 전환점을 추가한다. 사용자의 요청 원문을 짧게 인용한다.
-4. 결정은 `docs/`(요구사항 또는 ADR)에 반영하고, `collab/`에는 링크만 남긴다.
+4. 사용자는 Claude Code 초보자다. 사용자가 Claude Code나 AI와 일하는 법에 대해 새로 배운 것이 있으면 `journey/learning-claude-code.md`에 추가한다.
+5. 결정은 `docs/`(요구사항 또는 ADR)에 반영하고, `collab/`에는 링크만 남긴다.

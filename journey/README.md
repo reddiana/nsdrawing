@@ -21,6 +21,7 @@ updated: 2026-10-07
 | --- | --- |
 | [[timeline]] | 날짜별 주요 사건과 전환점 |
 | [[story-ideas]] | 영상 구성안, 챕터 아이디어, 장면 메모 |
+| [[learning-claude-code]] | Claude Code 초보자가 배워 가는 과정 |
 | `assets/` | 스크린샷, 화면 녹화, 그림 (파일 이름: `날짜-설명.png`) |
 
 ## 기록 원칙
