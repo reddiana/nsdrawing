@@ -4,7 +4,7 @@ tags:
   - nsdrawing
   - design
 status: 작성 전
-updated: 2026-10-07
+updated: 2026-10-10
 ---
 
 # 설계: Obsidian 플러그인 (`apps/obsidian`)
@@ -16,10 +16,27 @@ updated: 2026-10-07
 
 ## 1. `.ns.svg` 파일 열기
 
-> [!warning] 먼저 검증 필요 (스파이크)
-> Obsidian은 확장자 단위로 뷰를 등록하고, `a.ns.svg`의 확장자는 `svg`로 봅니다.
-> 기본 이미지 뷰와 충돌하지 않고 `.ns.svg`만 편집기로 여는 방법을 확인합니다. → [[02-architecture#7. 위험과 검증이 필요한 사항]]
-> - 참고: drawio-obsidian, Excalidraw 플러그인(`.excalidraw.md`)의 구현 방식
+> [!success] 스파이크로 확인함 (2026-10-10)
+> 실험 플러그인으로 메인테이너의 Obsidian에서 확인했습니다. 코드: `journal/assets/2026-10-10-obsidian-spike-main.js`
+
+| 확인한 것 | 결과 | 방법 |
+| --- | --- | --- |
+| 파일 목록에서 `.ns.svg`를 열면 편집기로 열림 | 됨 | 아래 "가로채기" |
+| 일반 `.svg`는 기본 이미지 보기로 열림 | 됨 | 가로채기 조건을 `.ns.svg`로 한정 |
+| 노트의 `![[이름.ns.svg]]`가 그림으로 보임 (읽기·편집 모드) | 됨 | Obsidian 기본 동작. 플러그인이 할 일 없음 |
+| 편집기에서 저장하면 노트를 다시 열지 않아도 그림이 바뀜 | 처음엔 안 됨 → 고쳐서 됨 | 아래 "노트 그림 갱신" |
+| 노트의 `.ns.svg` 그림 우클릭에 "Edit NS diagram" | 됨 | 아래 "그림 우클릭 메뉴" |
+
+**확장자 등록만으로는 안 된다.** `registerExtensions(["ns.svg"])`는 오류 없이 등록되지만 효과가 없습니다. Obsidian은 `a.ns.svg`의 확장자를 마지막 점 뒤의 `svg`로 보고, `svg`에 등록된 이미지 보기(`image`)로 엽니다.
+
+**가로채기:** `WorkspaceLeaf.prototype.setViewState`를 감싸서, 열려는 보기가 `image`이고 파일 이름이 `.ns.svg`로 끝나면 보기 종류를 NS 편집기로 바꿉니다. Excalidraw 플러그인이 `.excalidraw.md`를 여는 방식과 같습니다.
+
+**노트 그림 갱신 ([[01-requirements#^obs-refresh]]):** Obsidian은 노트의 그림을 `<img>`로 한 번 그린 뒤, 파일이 바뀌어도 다시 불러오지 않습니다. 그래서 볼트의 `modify` 이벤트에서 `.ns.svg`가 바뀌면, 열린 모든 탭에서 그 파일을 가리키는 `.internal-embed` 안의 `<img>` 주소를 `vault.getResourcePath(file)`(수정 시각이 붙어 주소가 바뀜)로 바꿉니다. 이벤트에 걸었으므로 git pull이나 다른 도구로 바뀌어도 갱신됩니다.
+
+**그림 우클릭 메뉴 ([[01-requirements#^obs-edit-embed]]):** 문서 전체의 `contextmenu` 이벤트를 먼저(capture) 받아, 대상이 `.ns.svg`를 가리키는 `.internal-embed`이면 Obsidian의 `Menu`를 띄웁니다.
+
+> [!warning] 남은 위험
+> 가로채기, `.internal-embed`의 `src` 속성, `<img>` 구조는 모두 Obsidian이 공개하지 않은 내부 동작입니다. Obsidian이 업데이트되면 깨질 수 있습니다. 본 구현에서는 이 부분을 한곳에 모으고, Obsidian 새 버전마다 확인할 테스트 목록을 둡니다.
 
 ## 2. 노트에 새 다이어그램 넣기 ("Insert new NS diagram")
 
@@ -35,12 +52,10 @@ updated: 2026-10-07
 
 요구사항: [[01-requirements#^obs-edit-embed]], [[01-requirements#^obs-detect]]
 
-> [!todo] 설계할 것
-> - 노트에 보이는 그림(읽기 화면, 편집 화면 모두)의 우클릭 메뉴에 항목 추가하는 방법
-> - 저장 후 노트의 그림이 바로 갱신되는지 확인 (이미지 캐시 때문에 안 바뀌면 대응 필요)
+우클릭 메뉴와 그림 갱신은 스파이크로 방법을 확인했다. → [[#1. `.ns.svg` 파일 열기]]
 
-> [!tip] 참고 구현
-> drawio-obsidian의 소스 코드에서 두 메뉴를 어떻게 붙였는지 먼저 확인한다.
+> [!todo] 설계할 것
+> - `.ns`가 빠진 `.svg`를 내용으로 감지해 메뉴를 띄우는 방법 ([[01-requirements#^obs-detect]])
 
 ## 4. 볼트 입출력
 
