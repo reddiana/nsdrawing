@@ -27,7 +27,6 @@ updated: 2026-10-10
 
 ## 다음 할 일
 
-- [ ] inbox에서 처리한 항목 지우기 확인 (1-1, 1-2, 1-3, 1-6, 3-4, 4-1, 4-2, 질문 전부)
 - [ ] 제안됨 ADR 결정
 	- [ ] [[0011-development-order|ADR-0011]] 개발 순서 (제안: 웹 → Obsidian → 데스크톱)
 	- [ ] [[0010-ui-framework|ADR-0010]] UI 프레임워크
@@ -47,5 +46,4 @@ updated: 2026-10-10
 - 모델 네임스페이스 URI → [[01-file-format#6. 미결정 사항]]
 - 블록 글자는 코드인가, 일반 문장인가 (구문 강조 방식이 갈림) → [[01-requirements#6. 미결정 사항]]
 - 저장된 SVG의 색: 고정 / 보는 환경의 테마를 따름 → [[0013-default-visual-style|ADR-0013]]
-- Drive에 저장할 확장자: `.ns` / `.ns.svg` → [[0012-google-drive-integration|ADR-0012]]
 - Obsidian "Insert new NS diagram" 세부: 새 파일 이름·위치, 빈 채로 닫았을 때, 저장 시점 → [[01-requirements#2.1 Obsidian 플러그인]]

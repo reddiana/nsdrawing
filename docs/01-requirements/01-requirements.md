@@ -99,7 +99,7 @@ flowchart LR
 
 ### 2.4 Google Drive
 
-웹 버전에 Drive 연동을 더한 형태다. → [[0012-google-drive-integration|ADR-0012]]
+웹 버전에 Drive 연동을 더한 형태다. Drive에서 만드는 파일은 `.ns.svg`로 저장한다. → [[0012-google-drive-integration|ADR-0012]], [[0014-drive-file-extension|ADR-0014]]
 
 - [ ] #P1 Drive에서 NS 파일을 우클릭해 "NSDrawing으로 열기"로 편집 ^gd-open-with
 - [ ] #P1 Drive의 "새로 만들기" 메뉴에서 새 NS 다이어그램 만들기 ^gd-new
@@ -264,8 +264,6 @@ DIN 66261 / 원 논문 기준입니다.
 
 요구사항 관련 미결정 사항입니다. 아키텍처 관련 미결정 사항은 "제안됨" 상태의 ADR로 관리합니다. → [[docs/README#아키텍처 결정 기록 (ADR)|ADR 목록]]
 
-- [ ] **Drive에 저장할 확장자:** `.ns` / `.ns.svg` → [[0012-google-drive-integration|ADR-0012]]
-	- Drive 미리보기와 썸네일([[#^gd-preview]])은 파일이 SVG로 인식되어야 나온다. 그래서 `.ns.svg`가 유리하다.
 - [ ] **블록 글자는 코드인가, 일반 문장인가:** 구문 강조([[#^lay-syntax]])를 어떤 문법으로 할지가 여기서 갈린다.
 - [ ] **저장된 SVG의 색:** 저장할 때의 테마 색으로 고정할지, 보는 환경(예: Obsidian 다크 모드)을 따를지 → [[0013-default-visual-style|ADR-0013]]
 

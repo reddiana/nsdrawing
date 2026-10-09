@@ -29,21 +29,22 @@ NS 차트(Nassi-Shneiderman Diagram)를 그리는 프로그램입니다. Obsidia
 
 ## 아키텍처 결정 기록 (ADR)
 
-| 번호 | 제목 | 상태 |
-| --- | --- | --- |
-| [[0001-record-architecture-decisions\|0001]] | ADR로 아키텍처 결정을 기록한다 | 승인 |
-| [[0002-three-targets-shared-core\|0002]] | 세 대상 배포 + 공유 코어 모노레포 | 승인 |
-| [[0003-typescript\|0003]] | 구현 언어 TypeScript | 승인 |
-| [[0004-structure-editor\|0004]] | 구조 편집기: 트리 모델 + 자동 레이아웃 | 승인 |
-| [[0005-model-embedded-svg\|0005]] | 모델 내장 SVG를 저장 형식으로 사용 | 승인 |
-| [[0006-file-extensions\|0006]] | 확장자 `.ns` / `.ns.svg` | 승인 |
-| [[0007-json-serialization\|0007]] | 모델 직렬화 형식 JSON | 승인 |
-| [[0008-contiguous-selection\|0008]] | 선택은 같은 부모 아래 연속 범위 | 승인 |
-| [[0009-desktop-framework\|0009]] | 데스크톱 프레임워크 (Electron / Tauri) | 제안됨 |
-| [[0010-ui-framework\|0010]] | UI 프레임워크 | 제안됨 |
-| [[0011-development-order\|0011]] | 개발 순서 | 제안됨 |
-| [[0012-google-drive-integration\|0012]] | Google Drive 연동은 웹 버전 위에 얹는다 | 승인 |
-| [[0013-default-visual-style\|0013]] | 기본 시각 스타일은 차분한 바탕 + 옅은 색조, 색은 테마로 분리 | 승인 |
+| 번호                                           | 제목                                   | 상태  |
+| -------------------------------------------- | ------------------------------------ | --- |
+| [[0001-record-architecture-decisions\|0001]] | ADR로 아키텍처 결정을 기록한다                   | 승인  |
+| [[0002-three-targets-shared-core\|0002]]     | 세 대상 배포 + 공유 코어 모노레포                 | 승인  |
+| [[0003-typescript\|0003]]                    | 구현 언어 TypeScript                     | 승인  |
+| [[0004-structure-editor\|0004]]              | 구조 편집기: 트리 모델 + 자동 레이아웃              | 승인  |
+| [[0005-model-embedded-svg\|0005]]            | 모델 내장 SVG를 저장 형식으로 사용                | 승인  |
+| [[0006-file-extensions\|0006]]               | 확장자 `.ns` / `.ns.svg`                | 승인  |
+| [[0007-json-serialization\|0007]]            | 모델 직렬화 형식 JSON                       | 승인  |
+| [[0008-contiguous-selection\|0008]]          | 선택은 같은 부모 아래 연속 범위                   | 승인  |
+| [[0009-desktop-framework\|0009]]             | 데스크톱 프레임워크 (Electron / Tauri)        | 제안됨 |
+| [[0010-ui-framework\|0010]]                  | UI 프레임워크                             | 제안됨 |
+| [[0011-development-order\|0011]]             | 개발 순서                                | 제안됨 |
+| [[0012-google-drive-integration\|0012]]      | Google Drive 연동은 웹 버전 위에 얹는다         | 승인  |
+| [[0013-default-visual-style\|0013]]          | 기본 시각 스타일은 차분한 바탕 + 옅은 색조, 색은 테마로 분리 | 승인  |
+| [[0014-drive-file-extension\|0014]]          | Google Drive에서 만드는 파일은 `.ns.svg`로 저장한다 | 승인  |
 
 ADR 상태: **제안됨**(검토 중) → **승인** → (필요하면) **대체됨** / **폐기**
 
