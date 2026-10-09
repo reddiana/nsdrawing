@@ -108,7 +108,8 @@ date: 2026-10-10
 | 유료 버전: Confluence(Forge)를 요구사항 #P2로. 다른 후보는 나중에 검토 | [[01-requirements#2.5 Confluence (유료, 나중에)]], [[status]] |
 | 웹 참고 모델: 공유 URL, 보기 모드, 도움말 #P1 | [[01-requirements#^web-share-url]], [[01-requirements#^web-view-mode]], [[01-requirements#^help]] |
 | Scratch: 이벤트 머리 #P1, 여러 처리기·블록 묶음 #P2. 지난 세션 제안의 세부가 기록되지 않아 새로 제안함 | [[01-requirements#^blk-event]], [[01-requirements#^edit-snippets]] |
-| 강조하기: 영역 강조 모양 A(EasyCODE식)/B(배경)/C(테두리)를 그려 비교하기로 함 | [[inbox]] |
+| 강조하기: 영역 강조 모양 A(EasyCODE식)/B(배경)/C(테두리)를 그려 비교하기로 함 | [[inbox]], [비교 시안](https://claude.ai/artifact/MGnGUbUZ2gRbfGLmfqvTy7) |
+| **바로잡음:** 강조 영역과 접기/펼치기는 별도 요구사항이다. 제안 4에서 Claude가 둘을 "영역" 하나로 합쳤던 것을 나눔. "강조 영역은 접고 펼 수 있다"는 강조 영역 요구사항에 넣음 | [[01-requirements#접기 · 펼치기]], [[01-requirements#강조 영역]] |
 | 제안 5 호칭은 공식 용어 **메인테이너**. 후보(메인테이너, 프로덕트 오너, 프로젝트 오너) 중 선택. `plan/` · `journal/` · `tech-notes/` · CLAUDE.md의 "사용자"를 바꿈. 일반 사용자를 뜻하는 곳과 이 논의 본문은 그대로 둠 | CLAUDE.md "문서 작성 규칙" |
 
 ## inbox 원문 (지운 항목)
