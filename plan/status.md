@@ -35,8 +35,6 @@ updated: 2026-10-10
 - [ ] 설계: [[02-layout]] (레이아웃 알고리즘, 텍스트 폭 측정 문제)
 - [ ] 스파이크: Obsidian에서 `.ns.svg`만 편집기로 열 수 있는지 검증
 - [ ] 나중에 검토: 유료 버전. Confluence는 요구사항에 #P2로 올림([[01-requirements#2.5 Confluence (유료, 나중에)]]). 다른 후보: Jira(같은 Forge로 묶음), Google Workspace Marketplace
-- [ ] [[inbox]]의 "강조하기": 강조 모양 A/B/C 중 고르기 ([비교 시안](https://claude.ai/artifact/MGnGUbUZ2gRbfGLmfqvTy7))
-	- 강조하기는 [[01-requirements#강조 영역]]의 강조 모양을 정하는 일이 됐다. EasyCODE `#ifdef` 영역 모양(왼쪽 막대 + 머리 띠 + 접기)을 시안 C 위에 그려 보여 주기로 제안함
 
 ## 열린 질문
 
