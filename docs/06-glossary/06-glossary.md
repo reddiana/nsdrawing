@@ -28,6 +28,7 @@ updated: 2026-10-07
 | 갈래       | branch                                   | `Branch`       | 선택 블록 안의 각 경로. 하나의 시퀀스를 가짐  |
 | 본문       | body                                     | `body`         | 반복 블록 안에서 반복되는 시퀀스          |
 | 조건       | condition                                | `condition`    | 선택·반복 블록의 판정 텍스트            |
+| 이벤트 머리 | event hat | `EventHead`(안) | 다이어그램 맨 위에 다는 이벤트. 그 다이어그램이 처리기임을 나타냄 (Scratch에서 가져옴) |
 
 ## 편집 개념
 

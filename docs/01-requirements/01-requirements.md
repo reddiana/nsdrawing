@@ -96,6 +96,10 @@ flowchart LR
 	- 미지원 브라우저에서는 파일 업로드와 다운로드로 대체
 - [ ] #P1 작성 중인 내용 브라우저 저장소에 임시 보관 (새로고침해도 복구) ^web-draft
 - [ ] #P2 PWA (오프라인 사용, 설치) ^web-pwa
+- [ ] #P1 공유 URL: 다이어그램 전체를 압축해 URL에 담고, 링크만으로 연다. 서버가 필요 없다 ^web-share-url
+	- 아주 큰 다이어그램은 URL 길이 한계에 걸린다. 그때는 파일로 공유하라고 안내한다.
+- [ ] #P1 보기 모드: 편집 화면 없이 그림만 보여 준다. 공유 URL을 열면 이 모드로 시작하고, 버튼 하나로 편집 모드로 바꾼다 ^web-view-mode
+- 참고 모델: [SequenceDiagram.org](https://sequencediagram.org/) (공유 URL, 저장 장소 선택, 보기 모드, 도움말)
 
 ### 2.4 Google Drive
 
@@ -105,6 +109,14 @@ flowchart LR
 - [ ] #P1 Drive의 "새로 만들기" 메뉴에서 새 NS 다이어그램 만들기 ^gd-new
 - [ ] #P1 편집한 내용을 Drive의 원래 파일에 저장 ^gd-save
 - [ ] #P1 Drive 미리보기와 썸네일에서 다이어그램 그림이 보임 ^gd-preview
+
+### 2.5 Confluence (유료, 나중에)
+
+다른 배포 대상은 모두 무료이고, 이 대상은 유료로 판다. 기능은 무료 버전과 같고, Confluence 안에서 바로 쓸 수 있다는 편의로 가치를 낸다.
+
+- [ ] #P2 Confluence 페이지에 NS 다이어그램을 넣고, 페이지 안에서 편집 ^cf-app
+	- Atlassian Marketplace에는 새 앱을 Forge로만 올릴 수 있다. Forge 앱은 Confluence 안의 iframe에 웹 화면을 띄우므로 웹 버전과 구조가 거의 같다.
+	- 아키텍처는 네 번째 배포 대상이 붙을 자리를 남겨 둔다.
 
 ## 3. 기능 요구사항
 
@@ -125,6 +137,9 @@ DIN 66261 / 원 논문 기준입니다.
 | 병렬 처리 (Parallel) | 동시 실행 갈래 | #P2 |
 | 주석 블록 |  | #P2 |
 
+- [ ] #P1 이벤트 머리 블록: 다이어그램 맨 위에 "버튼을 누르면", "타이머가 끝나면" 같은 이벤트를 다는 모자 모양 머리. NS 차트 표준에는 없고 [Scratch](https://scratch.mit.edu/)에서 가져온 표기다 ^blk-event
+	- 임베디드 개발에서 이벤트는 곧 인터럽트 처리기다. 다이어그램 하나가 처리기 하나를 나타낸다.
+
 ### 3.2 편집
 
 - [ ] #P0 블록 선택, 추가(선택 블록의 앞/뒤/안쪽), 삭제, 텍스트 수정(더블클릭 또는 F2) ^edit-basic
@@ -142,7 +157,9 @@ DIN 66261 / 원 논문 기준입니다.
 - [ ] #P1 제어 블록 접기/펼치기: 접으면 머리(조건)만 남고, 본문 자리에 "⋯ 블록 n개" 한 줄이 보인다 ^edit-fold
 - [ ] #P1 영역: 선택한 블록들을 영역으로 묶어 이름·강조·접기를 함께 다룬다 (아래 [[#영역]]) ^edit-region
 - [ ] #P2 모두 접기 / 모두 펼치기 / 깊이 n까지 펼치기 ^edit-fold-all
-- [ ] #P2 한 문서에 여러 다이어그램 (함수별 탭) ^edit-multi-diagram
+- [ ] #P2 한 문서에 여러 다이어그램: 함수별 탭, 또는 이벤트 처리기 여러 개를 한 화면에 나란히 ^edit-multi-diagram
+- [ ] #P2 자주 쓰는 블록 묶음: 자주 쓰는 블록을 저장해 두고 끌어다 쓴다 (Scratch의 하드웨어 전용 블록 묶음처럼) ^edit-snippets
+- [ ] #P1 도움말: 사용법과 단축키 안내 (모든 배포 대상) ^help
 
 #### 여러 블록 선택 규칙
 
@@ -281,4 +298,5 @@ DIN 66261 / 원 논문 기준입니다.
 - [Ben Shneiderman의 NSD 페이지](https://www.cs.umd.edu/hcil/members/bshneiderman/nsd/)
 - [Structorizer](https://structorizer.fisch.lu) — 오픈소스 NS 차트 편집기, `.nsd` 확장자 사용
 - [drawio-obsidian](https://github.com/zapthedingbat/drawio-obsidian) — 모델 내장 SVG 저장 방식, Obsidian 노트에 그림을 넣고 편집하는 방식([[#2.1 Obsidian 플러그인]]) 참고. 편집 후 노트가 갱신되지 않는 점은 따르지 않는다([[#^obs-refresh]]).
+- [Scratch](https://scratch.mit.edu/) — 이벤트 머리 블록, 블록 묶음 참고. 하드웨어 교육에서는 Scratch 계열인 mBlock(Arduino), MakeCode(micro:bit)가 쓰인다.
 - [EasyCODE](https://www.easycode.de/) — 사용자가 꼽은 이상향. 요구사항의 상당 부분이 이 프로그램을 본떴다. ([스크린샷](https://www.easycode.de/fileadmin/_processed_/a/c/csm_easycode_struktogramm_04_6c9c584c4f.png))

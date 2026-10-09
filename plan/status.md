@@ -34,7 +34,8 @@ updated: 2026-10-10
 - [ ] 설계: [[01-model]] (노드 타입, 불변 조건, 편집 명령)
 - [ ] 설계: [[02-layout]] (레이아웃 알고리즘, 텍스트 폭 측정 문제)
 - [ ] 스파이크: Obsidian에서 `.ns.svg`만 편집기로 열 수 있는지 검증
-- [ ] [[inbox]]에 남은 항목 검토: "Scratch의 장점 도입"(이벤트 표현, 임베디드 분석), "강조하기", "수익 창출 버전"(나중에), "웹 버전 참고 모델"(SequenceDiagram.org)
+- [ ] 나중에 검토: 유료 버전. Confluence는 요구사항에 #P2로 올림([[01-requirements#2.5 Confluence (유료, 나중에)]]). 다른 후보: Jira(같은 Forge로 묶음), Google Workspace Marketplace
+- [ ] [[inbox]]의 "강조하기": 영역 강조 모양 A/B/C를 그려 비교 중
 	- 강조하기는 [[01-requirements#영역]]의 강조 모양을 정하는 일이 됐다. EasyCODE `#ifdef` 영역 모양(왼쪽 막대 + 머리 띠 + 접기)을 시안 C 위에 그려 보여 주기로 제안함
 
 ## 열린 질문

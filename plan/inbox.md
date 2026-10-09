@@ -4,22 +4,7 @@
 
 # 배포 대상
 
-## 수익 창출 버전
-수익 창출 버전: 다른 배포 버전들은 모두 무료로 배포하고, 이 버전들은 유상으로 수익을 창출하고 싶습니다.
-1. Confluence 플러그인 버전도 만들고 싶습니다. [Explore apps for Confluence | Atlassian Marketplace](https://marketplace.atlassian.com/product/confluence) 
-2. 수익을 창출할 다른 버전을 제안해주세요.
-
-## 웹 버전 참고 모델
-웹버전:
-1. [SequenceDiagram.org - UML Sequence Diagram Online Tool](https://sequencediagram.org/) — 참고 모델
-	1. URL to Share / 저장 장소 / View 모드 / Help - Instructions 등
-
 # 기능
-
-## Scratch의 장점 도입
-[Scratch - Imagine, Program, Share](https://scratch.mit.edu/)의 장점 도입
-1. Scratch가 NS Diagram과 유사해보이는데, Event를 표현할 수 있다는 점이 마음에 듭니다. NS Diagram에는 없는 표기법이지만 Scratch 처럼 이벤트를 표현할 수 있으면 좋겠어요.
-2. Embeded 시스템 개발자들이 Scratch를 많이 쓴다고 들었어요. Scratch의 어떤 장점 때문인지 분석해주세요. NSDrawing도 그러면 좋겠어요. 
 
 ## 강조하기
 강조하기

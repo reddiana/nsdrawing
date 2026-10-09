@@ -105,6 +105,10 @@ date: 2026-10-10
 | 문서 링크는 위키링크 그대로 둠. 대신 `docs/README.md` 맨 위에 "Obsidian으로 보라"는 안내를 넣음 (GitHub에서도 보이는 `> [!NOTE]` 형식) | [[docs/README\|문서 색인]] |
 | 저장소 맨 위 `README.md`를 만듦: 소개, 설계 단계 안내, Obsidian으로 보는 법, 폴더 안내. 중복이라 `docs/README.md`의 안내는 뺌 | `README.md`, CLAUDE.md "저장소 구성" |
 | 처리를 마친 inbox 항목 삭제. 남은 항목: 수익 창출 버전, 웹 버전 참고 모델, Scratch의 장점 도입, 강조하기 | [[#inbox 원문 (지운 항목)]] |
+| 유료 버전: Confluence(Forge)를 요구사항 #P2로. 다른 후보는 나중에 검토 | [[01-requirements#2.5 Confluence (유료, 나중에)]], [[status]] |
+| 웹 참고 모델: 공유 URL, 보기 모드, 도움말 #P1 | [[01-requirements#^web-share-url]], [[01-requirements#^web-view-mode]], [[01-requirements#^help]] |
+| Scratch: 이벤트 머리 #P1, 여러 처리기·블록 묶음 #P2. 지난 세션 제안의 세부가 기록되지 않아 새로 제안함 | [[01-requirements#^blk-event]], [[01-requirements#^edit-snippets]] |
+| 강조하기: 영역 강조 모양 A(EasyCODE식)/B(배경)/C(테두리)를 그려 비교하기로 함 | [[inbox]] |
 | 제안 5 호칭은 공식 용어 **메인테이너**. 후보(메인테이너, 프로덕트 오너, 프로젝트 오너) 중 선택. `plan/` · `journal/` · `tech-notes/` · CLAUDE.md의 "사용자"를 바꿈. 일반 사용자를 뜻하는 곳과 이 논의 본문은 그대로 둠 | CLAUDE.md "문서 작성 규칙" |
 
 ## inbox 원문 (지운 항목)
@@ -199,6 +203,29 @@ warning: in the working copy of 'CLAUDE.md', LF will be replaced by CRLF the nex
 
 ### 스파이크란
 `스파이크`란 무엇? 시제품이나 MVP(Minimum Viable Product)를 말하나요?
+
+### 두 번째로 지운 항목
+
+메인테이너가 제안을 수용해서 지운 항목입니다. 글은 inbox에 적힌 그대로입니다.
+
+### 배포 대상
+
+#### 수익 창출 버전
+수익 창출 버전: 다른 배포 버전들은 모두 무료로 배포하고, 이 버전들은 유상으로 수익을 창출하고 싶습니다.
+1. Confluence 플러그인 버전도 만들고 싶습니다. [Explore apps for Confluence | Atlassian Marketplace](https://marketplace.atlassian.com/product/confluence) 
+2. 수익을 창출할 다른 버전을 제안해주세요.
+
+#### 웹 버전 참고 모델
+웹버전:
+1. [SequenceDiagram.org - UML Sequence Diagram Online Tool](https://sequencediagram.org/) — 참고 모델
+	1. URL to Share / 저장 장소 / View 모드 / Help - Instructions 등
+
+### 기능
+
+#### Scratch의 장점 도입
+[Scratch - Imagine, Program, Share](https://scratch.mit.edu/)의 장점 도입
+1. Scratch가 NS Diagram과 유사해보이는데, Event를 표현할 수 있다는 점이 마음에 듭니다. NS Diagram에는 없는 표기법이지만 Scratch 처럼 이벤트를 표현할 수 있으면 좋겠어요.
+2. Embeded 시스템 개발자들이 Scratch를 많이 쓴다고 들었어요. Scratch의 어떤 장점 때문인지 분석해주세요. NSDrawing도 그러면 좋겠어요. 
 
 ## 발견한 위험
 
