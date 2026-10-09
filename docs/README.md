@@ -47,6 +47,7 @@ NS 차트(Nassi-Shneiderman Diagram)를 그리는 프로그램입니다. Obsidia
 | [[0014-drive-file-extension\|0014]]          | Google Drive에서 만드는 파일은 `.ns.svg`로 저장한다 | 승인  |
 | [[0015-highlight-region-border\|0015]]       | 강조 영역은 굵은 테두리로 그린다 | 승인  |
 | [[0016-fold-state-outside-file\|0016]]       | 접힘 상태는 파일에 저장하지 않는다 | 승인  |
+| [[0017-fold-name-in-model\|0017]]            | 접는 범위의 이름은 모델에 저장한다 | 승인  |
 
 ADR 상태: **제안됨**(검토 중) → **승인** → (필요하면) **대체됨** / **폐기**
 
