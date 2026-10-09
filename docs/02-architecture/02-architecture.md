@@ -6,7 +6,7 @@ tags:
   - nsdrawing
   - architecture
 status: 초안
-updated: 2026-10-07
+updated: 2026-10-10
 ---
 
 # NSDrawing 아키텍처 개요

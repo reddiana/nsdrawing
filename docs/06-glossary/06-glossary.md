@@ -3,7 +3,7 @@ title: 용어집
 tags:
   - nsdrawing
   - glossary
-updated: 2026-10-07
+updated: 2026-10-10
 ---
 
 # 용어집

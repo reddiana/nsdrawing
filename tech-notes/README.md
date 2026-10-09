@@ -19,3 +19,4 @@ NSDrawing을 만들며 배운 기술을 정리하는 곳입니다. 메인테이�
 - [[spike-prototype-mvp]] — 스파이크, 프로토타입, MVP의 차이 (2026-10-10)
 - [[git-line-endings]] — git과 줄 끝 문자 (LF / CRLF) (2026-10-10)
 - [[obsidian-plugin-internals]] — Obsidian 플러그인이 파일 열기와 메뉴에 끼어드는 법 (2026-10-10)
+- [[feedback-and-funding-channels]] — 사용자 의견 받기(Issues·Discussions·양식)와 후원·광고 채널 (2026-10-10)

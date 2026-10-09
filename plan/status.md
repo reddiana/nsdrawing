@@ -76,4 +76,6 @@ updated: 2026-10-10
 - 모델 네임스페이스 URI → [[01-file-format#6. 미결정 사항]]
 - 블록 글자는 코드인가, 일반 문장인가 (구문 강조 방식이 갈림) → [[01-requirements#6. 미결정 사항]]
 - 저장된 SVG의 색: 고정 / 보는 환경의 테마를 따름 → [[0013-default-visual-style|ADR-0013]]
+- 웹 광고의 자리: 광고 네트워크 정책이 "저장·내보내기·공유 때만"을 허용하는지 → [[01-requirements#6. 미결정 사항]]
+- 비공개 문제 알리기 채널: 이메일 / 폼 (웹 베타 무렵 결정) → [[01-requirements#^rep-issue]]
 - Obsidian "Insert new NS diagram" 세부: 새 파일 이름·위치, 빈 채로 닫았을 때, 저장 시점 → [[01-requirements#2.1 Obsidian 플러그인]]
