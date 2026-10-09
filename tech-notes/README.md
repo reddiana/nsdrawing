@@ -3,7 +3,7 @@ title: 기술 노트
 tags:
   - nsdrawing
   - tech-notes
-updated: 2026-10-09
+updated: 2026-10-10
 ---
 
 # 기술 노트
@@ -15,4 +15,6 @@ NSDrawing을 만들며 배운 기술을 정리하는 곳입니다. 사용자는 
 
 ## 노트 목록
 
-- [[drive-app-basics]] — Google Drive 앱의 기초 (2026-10-09)
+- [[drive-app-basics]] — Google Drive 앱의 기초 (2026-10-09, 시퀀스 다이어그램·client secret 추가 2026-10-10)
+- [[spike-prototype-mvp]] — 스파이크, 프로토타입, MVP의 차이 (2026-10-10)
+- [[git-line-endings]] — git과 줄 끝 문자 (LF / CRLF) (2026-10-10)

@@ -6,29 +6,28 @@ NS 차트(Nassi-Shneiderman Diagram) 편집기. Obsidian 플러그인 · 데스�
 
 | 폴더 | 용도 |
 | --- | --- |
-| `docs/` | 애플리케이션 문서: 요구사항, 아키텍처, ADR, 설계, 파일 형식 명세. 시작점은 `docs/00-index/00-index.md` |
-| `plan/` | 일하기 위한 기록: 현재 상태(`status.md`), 부채 목록(`debt.md`), 세션 기록(`sessions/`) |
+| `docs/` | 애플리케이션 문서: 요구사항, 아키텍처, ADR, 설계, 파일 형식 명세. 시작점은 `docs/README.md` (GitHub에서 폴더를 열면 바로 보이도록) |
+| `plan/` | 일하기 위한 기록: 현재 상태(`status.md`), 부채 목록(`debt.md`), 세션 기록(`sessions/`), inbox(`inbox.md`: 세션 사이에 사용자가 생각을 적어 두는 페이지) |
 | `journal/` | 이야기하기 위한 여정 기록: 타임라인, 이야기 구성 아이디어, 스크린샷. 누구나 따라 해 볼 용기를 얻도록 쓴다 |
 | `tech-notes/` | 사용자에게 설명한 기술 정리 (사용자는 백엔드 개발자, 프론트엔드는 처음) |
-| `inbox.md` | 세션 사이에 사용자가 생각을 적어 두는 페이지 |
 
 ## 문서 작성 규칙
 
 - 사용자는 모든 문서를 **Obsidian**으로 읽고 편집한다. 속성(frontmatter), `[[위키링크]]`, 태그, 체크박스, 콜아웃, Mermaid를 쓴다.
 - 문서는 한국어, 파일 이름은 영어 kebab-case.
-- `docs/` 아래는 모두 폴더이며, 읽는 순서대로 두 자리 번호를 붙인다. 문서 하나짜리 항목도 같은 이름의 폴더로 감싼다 (`00-index/00-index.md`, `04-design/01-model.md` …). ADR만 네 자리 번호(`0001-…`)를 쓴다. 새 문서는 순서에 맞는 다음 번호로 만든다.
-- 위키링크는 파일 이름만으로 건다. 그래서 `docs/`, `plan/`, `journal/`, `tech-notes/` 전체에서 파일 이름이 겹치지 않게 한다 (`README.md` 제외).
+- `docs/` 아래는 색인 `docs/README.md`를 빼고 모두 폴더이며, 읽는 순서대로 두 자리 번호를 붙인다. 문서 하나짜리 항목도 같은 이름의 폴더로 감싼다 (`01-requirements/01-requirements.md`, `04-design/01-model.md` …). ADR만 네 자리 번호(`0001-…`)를 쓴다. 새 문서는 순서에 맞는 다음 번호로 만든다.
+- 위키링크는 파일 이름만으로 건다. 그래서 `docs/`, `plan/`, `journal/`, `tech-notes/` 전체에서 파일 이름이 겹치지 않게 한다 (`README.md` 제외). `README.md`는 경로로 건다: `[[docs/README|문서 색인]]`.
 - 요구사항에는 "무엇을"만 쓴다. 근거는 ADR(`docs/03-adr/`, 템플릿 `0000-template.md`), 방법은 설계 문서로 링크한다.
 - 요구사항 항목은 블록 ID(`^edit-wrap` 등)로 가리킨다. 새 요구사항에도 ID를 단다.
-- 승인된 ADR은 고치지 않는다. 결정이 바뀌면 새 ADR을 쓰고 `supersedes`/`superseded-by`로 잇는다. ADR을 추가하면 `docs/00-index/00-index.md` 목록도 갱신한다.
+- 승인된 ADR은 고치지 않는다. 결정이 바뀌면 새 ADR을 쓰고 `supersedes`/`superseded-by`로 잇는다. ADR을 추가하면 `docs/README.md` 목록도 갱신한다.
 
 ## 세션 시작 시 할 일
 
 새 세션의 첫 응답에서는, 사용자의 첫 메시지가 인사뿐이더라도 먼저 다음을 한다:
 
-1. `plan/status.md`, `plan/debt.md`, `plan/sessions/`의 가장 최근 세션 기록, `inbox.md`를 읽는다.
+1. `plan/status.md`, `plan/debt.md`, `plan/sessions/`의 가장 최근 세션 기록, `plan/inbox.md`를 읽는다.
 2. 지난 세션에서 한 일, 지금 단계, 다음 할 일, 열린 질문, 남은 부채를 짧게 요약해 알려 준다.
-3. `inbox.md`에 새 내용이 있으면 항목마다 사용자와 함께 검토해 이번 세션에서 할 일을 계획한다. 처리 방향에 사용자가 동의한 항목만 지운다. 지우기 전에 그 항목의 원문을 세션 기록에 그대로 옮기고, 합의한 할 일은 `plan/status.md`로 옮긴다. 검토하지 못했거나 결정하지 못한 항목은 `inbox.md`에 그대로 남겨 다음 세션에서 이어 본다.
+3. `plan/inbox.md`에 새 내용이 있으면 항목마다 사용자와 함께 검토해 이번 세션에서 할 일을 계획한다. 처리 방향에 사용자가 동의한 항목만 지운다. 지우기 전에 그 항목의 원문을 세션 기록에 그대로 옮기고, 합의한 할 일은 `plan/status.md`로 옮긴다. 검토하지 못했거나 결정하지 못한 항목은 inbox에 그대로 남겨 다음 세션에서 이어 본다. 항목을 지워도 1레벨 제목(`# …`)은 남긴다.
 4. 그다음 사용자의 요청을 처리한다. 첫 메시지가 구체적인 요청이면 요약은 몇 줄로 줄인다.
 
 ## 세션 끝날 때 할 일
@@ -42,3 +41,4 @@ NS 차트(Nassi-Shneiderman Diagram) 편집기. Obsidian 플러그인 · 데스�
 5. 사용자는 Claude Code 초보자다. 사용자가 Claude Code나 AI와 일하는 법에 대해 새로 배운 것이 있으면 `journal/learning-claude-code.md`에 추가한다.
 6. 사용자에게 기술을 설명했으면 `tech-notes/`에 정리한다.
 7. 결정은 `docs/`(요구사항 또는 ADR)에 반영하고, `plan/`에는 링크만 남긴다.
+8. 바뀐 파일을 모두 커밋하고 push한다. 커밋하지 않은 내용은 git으로 되살릴 수 없다.

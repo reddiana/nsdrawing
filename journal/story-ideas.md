@@ -29,6 +29,6 @@ updated: 2026-10-07
 
 ## 찍어 둘 것
 
-- [ ] Obsidian에서 `docs/00-index/00-index.md`를 연 화면
+- [ ] Obsidian에서 `docs/README.md`를 연 화면
 - [ ] ADR 목록, Mermaid 아키텍처 그림이 보이는 화면
 - [ ] (코딩 시작 후) 첫 NS 차트가 그려진 화면

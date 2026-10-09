@@ -7,13 +7,13 @@ tags:
   - nsdrawing
   - requirements
 status: 초안
-updated: 2026-10-09
+updated: 2026-10-10
 ---
 
 # NSDrawing 요구사항 명세
 
 NS 차트(Nassi-Shneiderman Diagram)를 그리는 프로그램의 요구사항입니다. 이 문서는 **무엇을** 만드는지만 다룹니다.
-**왜** 그렇게 정했는지는 [[00-index#아키텍처 결정 기록 (ADR)|ADR]]에, **어떻게** 만드는지는 [[02-architecture]]와 설계 문서에 있습니다.
+**왜** 그렇게 정했는지는 [[docs/README#아키텍처 결정 기록 (ADR)|ADR]]에, **어떻게** 만드는지는 [[02-architecture]]와 설계 문서에 있습니다.
 
 > [!info] 읽는 법
 > - 우선순위 태그: #P0 = MVP 필수 · #P1 = 1차 확장 · #P2 = 나중에
@@ -60,6 +60,8 @@ flowchart LR
 	- 누르면 해당 파일을 NS 편집 탭으로 연다.
 	- 저장하면 노트에 보이는 그림도 새 내용으로 갱신된다.
 - [ ] #P0 같은 기능을 명령 팔레트에서도 실행 ("Insert new NS diagram") ^obs-insert-command
+- [ ] #P0 편집을 마치면, 그 그림을 넣은 노트가 이미 열려 있어도 다시 열지 않고 새 그림으로 보인다. 같은 그림을 넣은 다른 열린 노트도 마찬가지다. ^obs-refresh
+	- drawio-obsidian은 편집을 마쳐도 노트를 다시 열어야 바뀐 그림이 보인다. 사용자는 이 때문에 [obsidian-refresh-any-view](https://github.com/mnaoumov/obsidian-refresh-any-view) 플러그인을 따로 쓰고 있다. NSDrawing은 별도 플러그인 없이 갱신되어야 한다.
 
 **파일 다루기**
 
@@ -200,10 +202,11 @@ DIN 66261 / 원 논문 기준입니다.
 - [ ] #P0 열 때는 모델만 읽고, 저장할 때마다 그림 부분을 모델에서 새로 생성한다. ^fmt-model-source
 - [ ] #P0 모델이 없거나 손상된 SVG를 열면 편집 불가 안내를 표시한다 (그림을 역해석하지 않음). ^fmt-invalid
 - [ ] #P0 그림 속 텍스트는 텍스트로 남기고, 글꼴은 대체 글꼴 목록을 지정한다. ^fmt-text
+- [ ] #P1 다른 도구로 그림 부분만 고친 파일을 열면, 그림이 모델과 달라졌음을 알린다. 저장하면 그 변경이 사라진다는 것도 함께 알린다. ^fmt-external-edit
 - [ ] #P1 다른 뷰어에서도 글꼴이 똑같이 보이도록 텍스트를 외곽선(path)으로 바꿔 저장하는 옵션 (모델에는 텍스트가 그대로 남음) ^fmt-outline
 
 > [!warning] 모델이 원본
-> 다른 도구(Inkscape 등)로 그림 부분만 고친 내용은 다시 열면 사라집니다.
+> 다른 도구(Inkscape 등)로 그림 부분만 고친 내용은 다시 열면 사라집니다. 대신 편집기가 이를 알려 줍니다([[#^fmt-external-edit]]).
 
 ### 3.5 내보내기 · 가져오기
 
@@ -246,7 +249,7 @@ DIN 66261 / 원 논문 기준입니다.
 
 ## 6. 미결정 사항
 
-요구사항 관련 미결정 사항입니다. 아키텍처 관련 미결정 사항은 "제안됨" 상태의 ADR로 관리합니다. → [[00-index#아키텍처 결정 기록 (ADR)|ADR 목록]]
+요구사항 관련 미결정 사항입니다. 아키텍처 관련 미결정 사항은 "제안됨" 상태의 ADR로 관리합니다. → [[docs/README#아키텍처 결정 기록 (ADR)|ADR 목록]]
 
 - [ ] **Drive에 저장할 확장자:** `.ns` / `.ns.svg` → [[0012-google-drive-integration|ADR-0012]]
 	- Drive 미리보기와 썸네일([[#^gd-preview]])은 파일이 SVG로 인식되어야 나온다. 그래서 `.ns.svg`가 유리하다.
@@ -263,5 +266,5 @@ DIN 66261 / 원 논문 기준입니다.
 - [Wikipedia (독일어): Nassi-Shneiderman-Diagramm](https://de.wikipedia.org/wiki/Nassi-Shneiderman-Diagramm) — DIN 66261 기호 규칙
 - [Ben Shneiderman의 NSD 페이지](https://www.cs.umd.edu/hcil/members/bshneiderman/nsd/)
 - [Structorizer](https://structorizer.fisch.lu) — 오픈소스 NS 차트 편집기, `.nsd` 확장자 사용
-- [drawio-obsidian](https://github.com/zapthedingbat/drawio-obsidian) — 모델 내장 SVG 저장 방식 참고
+- [drawio-obsidian](https://github.com/zapthedingbat/drawio-obsidian) — 모델 내장 SVG 저장 방식, Obsidian 노트에 그림을 넣고 편집하는 방식([[#2.1 Obsidian 플러그인]]) 참고. 편집 후 노트가 갱신되지 않는 점은 따르지 않는다([[#^obs-refresh]]).
 - [EasyCODE](https://www.easycode.de/) — 사용자가 꼽은 이상향. 요구사항의 상당 부분이 이 프로그램을 본떴다. ([스크린샷](https://www.easycode.de/fileadmin/_processed_/a/c/csm_easycode_struktogramm_04_6c9c584c4f.png))
