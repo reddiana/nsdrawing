@@ -316,4 +316,4 @@ DIN 66261 / 원 논문 기준입니다.
 - [Structorizer](https://structorizer.fisch.lu) — 오픈소스 NS 차트 편집기, `.nsd` 확장자 사용
 - [drawio-obsidian](https://github.com/zapthedingbat/drawio-obsidian) — 모델 내장 SVG 저장 방식, Obsidian 노트에 그림을 넣고 편집하는 방식([[#2.1 Obsidian 플러그인]]) 참고. 편집 후 노트가 갱신되지 않는 점은 따르지 않는다([[#^obs-refresh]]).
 - [Scratch](https://scratch.mit.edu/) — 이벤트 머리 블록, 블록 묶음 참고. 하드웨어 교육에서는 Scratch 계열인 mBlock(Arduino), MakeCode(micro:bit)가 쓰인다.
-- [EasyCODE](https://www.easycode.de/) — 사용자가 꼽은 이상향. 요구사항의 상당 부분이 이 프로그램을 본떴다. ([스크린샷](https://www.easycode.de/fileadmin/_processed_/a/c/csm_easycode_struktogramm_04_6c9c584c4f.png))
+- [EasyCODE](https://www.easycode.de/) — 메인테이너가 꼽은 이상향. 요구사항의 상당 부분이 이 프로그램을 본떴다. ([스크린샷](https://www.easycode.de/fileadmin/_processed_/a/c/csm_easycode_struktogramm_04_6c9c584c4f.png))
