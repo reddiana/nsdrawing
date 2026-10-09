@@ -32,20 +32,22 @@ sequenceDiagram
     participant A as Google 인증<br/>(Identity Services)
     participant API as Drive API
 
-    U->>D: 파일 우클릭 → "NSDrawing으로 열기"
-    D->>B: 등록해 둔 Open URL로 이동<br/>state={"ids":["파일ID"],"action":"open"}
-    B->>H: GET /index.html, app.js
-    H-->>B: 정적 파일 (서버 코드 없음)
-    B->>A: 토큰 요청 (client_id, 범위 drive.file)
+    U->>+D: 파일 우클릭 → "NSDrawing으로 열기"
+    D->>-B: 등록해 둔 Open URL로 이동<br/>state={"ids":["파일ID"],"action":"open"}
+    activate B
+    B->>+H: GET /index.html, app.js
+    H-->>-B: 정적 파일 (서버 코드 없음)
+    B->>+A: 토큰 요청 (client_id, 범위 drive.file)
     A->>U: 동의 화면 (처음 한 번만)
     U-->>A: 허용
-    A-->>B: access token (브라우저 메모리에만 보관)
-    B->>API: GET files/{파일ID}?alt=media<br/>Authorization: Bearer 토큰
-    API-->>B: .ns.svg 내용
+    A-->>-B: access token (브라우저 메모리에만 보관)
+    B->>+API: GET files/{파일ID}?alt=media<br/>Authorization: Bearer 토큰
+    API-->>-B: .ns.svg 내용
     Note over B: SVG에서 모델을 꺼내 편집
     U->>B: 편집, 저장
-    B->>API: PATCH upload/files/{파일ID}<br/>Authorization: Bearer 토큰
-    API-->>B: 200 OK
+    B->>+API: PATCH upload/files/{파일ID}<br/>Authorization: Bearer 토큰
+    API-->>-B: 200 OK
+    deactivate B
 ```
 
 - 백엔드로 치면 브라우저가 **API 클라이언트 겸 서버 역할**을 다 합니다. 토큰이 우리 서버를 거치지 않으니, 우리가 지킬 비밀도 없습니다.

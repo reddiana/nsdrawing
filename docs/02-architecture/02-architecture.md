@@ -96,15 +96,15 @@ sequenceDiagram
     participant M as core/모델
     participant L as core/레이아웃
     participant R as core/렌더러
-    U->>E: 키 입력 · 클릭
-    E->>M: 편집 명령 실행 (예: 감싸기)
+    U->>+E: 키 입력 · 클릭
+    E->>+M: 편집 명령 실행 (예: 감싸기)
     M->>M: 불변 조건 검사, Undo 기록
-    M-->>E: 새 트리
-    E->>L: 레이아웃 계산 (텍스트 폭 측정 함수 주입)
-    L-->>E: 블록별 사각형
-    E->>R: 렌더링
-    R-->>E: SVG
-    E-->>U: 화면 갱신
+    M-->>-E: 새 트리
+    E->>+L: 레이아웃 계산 (텍스트 폭 측정 함수 주입)
+    L-->>-E: 블록별 사각형
+    E->>+R: 렌더링
+    R-->>-E: SVG
+    E-->>-U: 화면 갱신
 ```
 
 ### 4.2 저장과 열기

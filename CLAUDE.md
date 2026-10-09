@@ -16,6 +16,7 @@ NS 차트(Nassi-Shneiderman Diagram) 편집기. Obsidian 플러그인 · 데스�
 
 - 이 저장소의 주인을 **메인테이너**라고 부른다 (`plan/` · `journal/` · `tech-notes/` · CLAUDE.md). `docs/`의 "사용자"는 NSDrawing을 쓰는 사람이다.
 - 메인테이너는 모든 문서를 **Obsidian**으로 읽고 편집한다. 속성(frontmatter), `[[위키링크]]`, 태그, 체크박스, 콜아웃, Mermaid를 쓴다.
+- Mermaid Sequence Diagram에는 activation bar(`->>+` · `-->>-`, `activate`/`deactivate`)를 넣는다. 누가 언제 일하고 있는지 보여서 이해에 도움이 된다.
 - 문서는 한국어, 파일 이름은 영어 kebab-case.
 - `docs/` 아래는 색인 `docs/README.md`를 빼고 모두 폴더이며, 읽는 순서대로 두 자리 번호를 붙인다. 문서 하나짜리 항목도 같은 이름의 폴더로 감싼다 (`01-requirements/01-requirements.md`, `04-design/01-model.md` …). ADR만 네 자리 번호(`0001-…`)를 쓴다. 새 문서는 순서에 맞는 다음 번호로 만든다.
 - 위키링크는 파일 이름만으로 건다. 그래서 `docs/`, `plan/`, `journal/`, `tech-notes/` 전체에서 파일 이름이 겹치지 않게 한다 (`README.md` 제외). `README.md`는 경로로 건다: `[[docs/README|문서 색인]]`.
