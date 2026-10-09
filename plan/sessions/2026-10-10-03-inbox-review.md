@@ -22,6 +22,8 @@ date: 2026-10-10
 - 웹 광고 #P3: 편집 화면을 가리지 않고, 저장·내보내기·공유 때만 보인다. 정확한 자리는 광고 네트워크 정책을 확인해 정한다 → [[01-requirements#^web-ads]]
 - Claude skill #P3: `.ns.svg` 파일과 공유 URL을 함께 내놓는다 → [[01-requirements#^skill-claude]]
 - Buy Me a Coffee #P3: 모든 무료 배포 대상에 둔다 → [[01-requirements#^all-donate]]. README 버튼은 웹 베타를 출시할 때 단다 (status에 올림)
+- 문제 알리기 #P3: 실행 환경, 로그(오류 스택, 불변 조건 실패, 파일 입출력 실패), 최근 편집 기록, 동의 시 다이어그램을 담은 보고서. 오류가 나면 알릴지 묻는다 → [[01-requirements#3.7 문제 알리기]]
+	- 보내는 길(GitHub 이슈 작성 화면을 열고 보고서를 붙임)은 Claude가 정함. 확인 필요
 
 ## inbox 원문 (지운 항목)
 
@@ -38,3 +40,7 @@ date: 2026-10-10
 - #후순위  Buy Me a Coffee
 	- 최상단 README에 'Buy Me a Coffee' 후원 버튼 링크 있으면 좋겠어요. 웹버전 베타버전 출시하면 합시다.
 	- 웹버전 광고에 더해서 'Buy Me a Coffee'도 나오게
+
+### 3. 기능
+
+- #후순위 사용자가 에러 리포팅을 쉽고 정확하게 할 수 있어야함
