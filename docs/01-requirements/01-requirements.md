@@ -7,7 +7,7 @@ tags:
   - nsdrawing
   - requirements
 status: 초안
-updated: 2026-10-07
+updated: 2026-10-09
 ---
 
 # NSDrawing 요구사항 명세
@@ -95,6 +95,15 @@ flowchart LR
 - [ ] #P1 작성 중인 내용 브라우저 저장소에 임시 보관 (새로고침해도 복구) ^web-draft
 - [ ] #P2 PWA (오프라인 사용, 설치) ^web-pwa
 
+### 2.4 Google Drive
+
+웹 버전에 Drive 연동을 더한 형태다. → [[0012-google-drive-integration|ADR-0012]]
+
+- [ ] #P1 Drive에서 NS 파일을 우클릭해 "NSDrawing으로 열기"로 편집 ^gd-open-with
+- [ ] #P1 Drive의 "새로 만들기" 메뉴에서 새 NS 다이어그램 만들기 ^gd-new
+- [ ] #P1 편집한 내용을 Drive의 원래 파일에 저장 ^gd-save
+- [ ] #P1 Drive 미리보기와 썸네일에서 다이어그램 그림이 보임 ^gd-preview
+
 ## 3. 기능 요구사항
 
 ### 3.1 블록 종류
@@ -175,7 +184,9 @@ DIN 66261 / 원 논문 기준입니다.
 - [ ] #P0 갈래 너비 자동 분배 (어느 갈래가 깊어져도 전체 직사각형 유지) ^lay-branch-width
 - [ ] #P0 확대/축소, 화면 이동 ^lay-zoom
 - [ ] #P1 한글/영문 혼용 텍스트의 정확한 폭 측정 ^lay-text-measure
-- [ ] #P1 테마: 글꼴, 선 굵기, 색상, 흑백 인쇄 모드 ^lay-theme
+- [ ] #P0 기본 스타일: 옅은 단색 바탕, 가는 선, 반복·분기·호출의 머리에 옅은 색조 → [[0013-default-visual-style|ADR-0013]] ^lay-default-style
+- [ ] #P1 블록 글자의 구문 강조 (키워드, 주석을 다른 색으로) ^lay-syntax
+- [ ] #P1 테마: 글꼴, 선 굵기, 블록 종류별 색, 글자 색, 흑백 인쇄 모드. 테마를 바꿔도 레이아웃은 그대로 ^lay-theme
 - [ ] #P2 블록별 배경색 지정 ^lay-bgcolor
 
 ### 3.4 파일 형식
@@ -237,6 +248,11 @@ DIN 66261 / 원 논문 기준입니다.
 
 요구사항 관련 미결정 사항입니다. 아키텍처 관련 미결정 사항은 "제안됨" 상태의 ADR로 관리합니다. → [[00-index#아키텍처 결정 기록 (ADR)|ADR 목록]]
 
+- [ ] **Drive에 저장할 확장자:** `.ns` / `.ns.svg` → [[0012-google-drive-integration|ADR-0012]]
+	- Drive 미리보기와 썸네일([[#^gd-preview]])은 파일이 SVG로 인식되어야 나온다. 그래서 `.ns.svg`가 유리하다.
+- [ ] **블록 글자는 코드인가, 일반 문장인가:** 구문 강조([[#^lay-syntax]])를 어떤 문법으로 할지가 여기서 갈린다.
+- [ ] **저장된 SVG의 색:** 저장할 때의 테마 색으로 고정할지, 보는 환경(예: Obsidian 다크 모드)을 따를지 → [[0013-default-visual-style|ADR-0013]]
+
 - [ ] **주 사용자:** 교육용(학생, 강의 자료) / 실무 설계 문서용
 	- 교육용 → 실행 애니메이션 중요
 	- 실무용 → 코드 연동, PDF·인쇄 품질 중요
@@ -248,3 +264,4 @@ DIN 66261 / 원 논문 기준입니다.
 - [Ben Shneiderman의 NSD 페이지](https://www.cs.umd.edu/hcil/members/bshneiderman/nsd/)
 - [Structorizer](https://structorizer.fisch.lu) — 오픈소스 NS 차트 편집기, `.nsd` 확장자 사용
 - [drawio-obsidian](https://github.com/zapthedingbat/drawio-obsidian) — 모델 내장 SVG 저장 방식 참고
+- [EasyCODE](https://www.easycode.de/) — 사용자가 꼽은 이상향. 요구사항의 상당 부분이 이 프로그램을 본떴다. ([스크린샷](https://www.easycode.de/fileadmin/_processed_/a/c/csm_easycode_struktogramm_04_6c9c584c4f.png))

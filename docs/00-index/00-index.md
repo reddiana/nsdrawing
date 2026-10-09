@@ -4,7 +4,7 @@ aliases:
   - NSDrawing
 tags:
   - nsdrawing
-updated: 2026-10-07
+updated: 2026-10-09
 ---
 
 # NSDrawing 문서
@@ -42,6 +42,8 @@ NS 차트(Nassi-Shneiderman Diagram)를 그리는 프로그램입니다. Obsidia
 | [[0009-desktop-framework\|0009]] | 데스크톱 프레임워크 (Electron / Tauri) | 제안됨 |
 | [[0010-ui-framework\|0010]] | UI 프레임워크 | 제안됨 |
 | [[0011-development-order\|0011]] | 개발 순서 | 제안됨 |
+| [[0012-google-drive-integration\|0012]] | Google Drive 연동은 웹 버전 위에 얹는다 | 승인 |
+| [[0013-default-visual-style\|0013]] | 기본 시각 스타일은 차분한 바탕 + 옅은 색조, 색은 테마로 분리 | 승인 |
 
 ADR 상태: **제안됨**(검토 중) → **승인** → (필요하면) **대체됨** / **폐기**
 
