@@ -59,6 +59,8 @@ flowchart LR
 - [ ] #P0 노트에 삽입된 NS 다이어그램 그림의 우클릭 메뉴에 **"Edit NS diagram"** 항목 ^obs-edit-embed
 	- 누르면 해당 파일을 NS 편집 탭으로 연다.
 	- 저장하면 노트에 보이는 그림도 새 내용으로 갱신된다.
+	- Obsidian의 기존 우클릭 메뉴는 그대로 두고 이 항목만 더한다. 자리는 "이미지 삭제" 바로 위 구역의 맨 아래("파일 탐색기에서 파일 보기" 아래)다.
+	- 파일 목록에서 `.ns.svg`를 우클릭해도 같은 항목이 나온다. 자리는 "삭제" 바로 위 구역의 맨 아래("폴더에서 보기" 아래)다.
 - [ ] #P0 같은 기능을 명령 팔레트에서도 실행 ("Insert new NS diagram") ^obs-insert-command
 - [ ] #P0 편집을 마치면, 그 그림을 넣은 노트가 이미 열려 있어도 다시 열지 않고 새 그림으로 보인다. 같은 그림을 넣은 다른 열린 노트도 마찬가지다. ^obs-refresh
 	- drawio-obsidian은 편집을 마쳐도 노트를 다시 열어야 바뀐 그림이 보인다. 사용자는 이 때문에 [obsidian-refresh-any-view](https://github.com/mnaoumov/obsidian-refresh-any-view) 플러그인을 따로 쓰고 있다. NSDrawing은 별도 플러그인 없이 갱신되어야 한다.

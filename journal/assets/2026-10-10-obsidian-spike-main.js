@@ -148,27 +148,38 @@ module.exports = class NsSpikePlugin extends Plugin {
     };
     this.register(() => { WorkspaceLeaf.prototype.setViewState = orig; });
 
-    // 노트에 넣은 .ns.svg 그림을 우클릭하면 "Edit NS diagram" 메뉴
+    // 노트에 넣은 .ns.svg 그림 우클릭: Obsidian의 기존 메뉴는 그대로 두고 "Edit NS diagram"을 더한다
+    const plugin = this;
+    const openInEditor = async (file) => {
+      const leaf = this.app.workspace.getLeaf('tab');
+      await leaf.setViewState({ type: VIEW_TYPE, state: { file: file.path }, active: true });
+    };
+    const addEditItem = (menu, file, how) => {
+      if (menu.__nsAdded) return;
+      menu.__nsAdded = true;
+      // system 구역(기본 앱에서 열기, 폴더에서 보기 …)의 맨 아래. 바로 아래가 삭제 항목이 있는 danger 구역
+      menu.addItem((item) => item.setTitle('Edit NS diagram').setIcon('pencil').setSection('system').onClick(() => openInEditor(file)));
+      log('메뉴에 항목 추가', how, file.path);
+    };
+
+    // 우클릭한 그림을 잠깐 기억해 둔다 (메뉴를 막지 않음)
+    this.lastEmbed = null;
     this.registerDomEvent(document, 'contextmenu', (evt) => {
       const t = evt.target;
-      if (!(t instanceof Element)) return;
-      const embed = t.closest('.internal-embed');
-      if (!embed) return;
-      const src = embed.getAttribute('src') || '';
-      log('그림 우클릭', src);
-      if (!src.toLowerCase().endsWith('.ns.svg')) return;
-      evt.preventDefault();
-      evt.stopPropagation();
-      const menu = new Menu();
-      menu.addItem((item) => item.setTitle('Edit NS diagram').setIcon('pencil').onClick(async () => {
-        const active = this.app.workspace.getActiveFile();
-        const file = this.app.metadataCache.getFirstLinkpathDest(src, active ? active.path : '');
-        if (!file) { new Notice('파일을 찾지 못했습니다: ' + src); return; }
-        const leaf = this.app.workspace.getLeaf('tab');
-        await leaf.setViewState({ type: VIEW_TYPE, state: { file: file.path }, active: true });
-      }));
-      menu.showAtMouseEvent(evt);
+      const embed = t instanceof Element ? t.closest('.internal-embed') : null;
+      if (!embed) { this.lastEmbed = null; return; }
+      const src = (embed.getAttribute('src') || '').split('|')[0];
+      const active = this.app.workspace.getActiveFile();
+      const file = this.app.metadataCache.getFirstLinkpathDest(src, active ? active.path : '');
+      this.lastEmbed = file && file.path.toLowerCase().endsWith('.ns.svg') ? { file, at: Date.now() } : null;
+      log('그림 우클릭', src, this.lastEmbed ? '(.ns.svg)' : '');
     }, { capture: true });
+
+    // 방법 1 (정식): file-menu 이벤트
+    this.registerEvent(this.app.workspace.on('file-menu', (menu, file, source) => {
+      log('file-menu 이벤트', source, file ? file.path : null);
+      if (file instanceof TFile && file.path.toLowerCase().endsWith('.ns.svg')) addEditItem(menu, file, 'file-menu:' + source);
+    }));
 
     // 질문 4: .ns.svg가 바뀌면, 열려 있는 노트의 그림을 다시 불러오게 한다
     this.registerEvent(this.app.vault.on('modify', (file) => {

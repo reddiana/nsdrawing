@@ -33,10 +33,12 @@ updated: 2026-10-10
 
 **노트 그림 갱신 ([[01-requirements#^obs-refresh]]):** Obsidian은 노트의 그림을 `<img>`로 한 번 그린 뒤, 파일이 바뀌어도 다시 불러오지 않습니다. 그래서 볼트의 `modify` 이벤트에서 `.ns.svg`가 바뀌면, 열린 모든 탭에서 그 파일을 가리키는 `.internal-embed` 안의 `<img>` 주소를 `vault.getResourcePath(file)`(수정 시각이 붙어 주소가 바뀜)로 바꿉니다. 이벤트에 걸었으므로 git pull이나 다른 도구로 바뀌어도 갱신됩니다.
 
-**그림 우클릭 메뉴 ([[01-requirements#^obs-edit-embed]]):** 문서 전체의 `contextmenu` 이벤트를 먼저(capture) 받아, 대상이 `.ns.svg`를 가리키는 `.internal-embed`이면 Obsidian의 `Menu`를 띄웁니다.
+**그림 우클릭 메뉴 ([[01-requirements#^obs-edit-embed]]):** Obsidian의 공개 API인 `file-menu` 이벤트로 기존 메뉴에 항목을 더합니다. 노트의 그림 우클릭은 `source`가 `link-context-menu`, 파일 목록 우클릭은 `file-explorer-context-menu`로 옵니다. 항목은 `setSection('system')`으로 system 구역(기본 앱에서 열기, 폴더에서 보기 …)의 맨 아래에 둡니다. 그 바로 아래가 삭제 항목이 있는 danger 구역입니다.
+- 처음에는 `contextmenu`를 가로채 우리 메뉴만 띄웠는데, Obsidian의 기존 메뉴가 모두 사라졌습니다. 메인테이너의 지적으로 `file-menu` 방식으로 바꿨습니다. 이 부분은 내부 동작에 기대지 않습니다.
+- 같은 구역에 항목을 넣는 다른 플러그인이 있으면 우리 항목이 그 뒤로 밀릴 수 있습니다.
 
 > [!warning] 남은 위험
-> 가로채기, `.internal-embed`의 `src` 속성, `<img>` 구조는 모두 Obsidian이 공개하지 않은 내부 동작입니다. Obsidian이 업데이트되면 깨질 수 있습니다. 본 구현에서는 이 부분을 한곳에 모으고, Obsidian 새 버전마다 확인할 테스트 목록을 둡니다.
+> 가로채기(`setViewState`), 노트 그림 갱신에 쓰는 `.internal-embed`의 `src` 속성과 `<img>` 구조는 Obsidian이 공개하지 않은 내부 동작입니다. Obsidian이 업데이트되면 깨질 수 있습니다. 본 구현에서는 이 부분을 한곳에 모으고, Obsidian 새 버전마다 확인할 테스트 목록을 둡니다.
 
 ## 2. 노트에 새 다이어그램 넣기 ("Insert new NS diagram")
 
