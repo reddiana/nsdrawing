@@ -9,7 +9,7 @@ date: 2026-10-09
 
 # 2026-10-09 inbox 도입과 폴더 정리
 
-사용자가 세션 사이에 생각을 적어 두는 inbox를 처음 도입한 세션입니다. 폴더 이름을 정리하고, inbox의 배포 대상·기능 항목 일부를 결정했습니다.
+메인테이너가 세션 사이에 생각을 적어 두는 inbox를 처음 도입한 세션입니다. 폴더 이름을 정리하고, inbox의 배포 대상·기능 항목 일부를 결정했습니다.
 
 ## inbox 원문
 
@@ -38,13 +38,13 @@ date: 2026-10-09
 
 ## 논의 흐름
 
-1. **inbox 1번 "프로젝트 구조":** 메모 페이지 이름은 `inbox.md`로 정했습니다. `collab/`은 `plan/`으로 바꿨는데, Claude가 처음 제안한 `worklog/`는 `journal/`과 비슷해 보인다는 이유로 사용자가 `plan`을 골랐습니다. 그래서 그 안의 `plan.md`는 `status.md`가 됐습니다. `journey/`는 `journal/`로 바꿨고, [[debt]]와 `tech-notes/`를 새로 만들었습니다.
+1. **inbox 1번 "프로젝트 구조":** 메모 페이지 이름은 `inbox.md`로 정했습니다. `collab/`은 `plan/`으로 바꿨는데, Claude가 처음 제안한 `worklog/`는 `journal/`과 비슷해 보인다는 이유로 메인테이너가 `plan`을 골랐습니다. 그래서 그 안의 `plan.md`는 `status.md`가 됐습니다. `journey/`는 `journal/`로 바꿨고, [[debt]]와 `tech-notes/`를 새로 만들었습니다.
 2. **실수:** Claude가 inbox를 함께 검토하지 않고 혼자 요약해 옮긴 뒤 비워 버렸습니다. 원문은 커밋된 적이 없어 git으로 되살릴 수 없었고, 대화에 남아 있던 원문으로 복원했습니다.
 3. **inbox 규칙:** 합의한 항목만 지우고, 지우기 전에 원문을 세션 기록에 옮깁니다. 결정하지 못한 항목은 inbox에 남깁니다. (CLAUDE.md "세션 시작 시 할 일")
-4. **inbox 2-1 Google Drive 앱:** 웹 버전에 Drive 연동(연결 앱, 새로 만들기)을 더하는 방식에 사용자가 동의했습니다. → [[0012-google-drive-integration|ADR-0012]], [[01-requirements#2.4 Google Drive]]
-5. **inbox 2-2 유료 버전:** Confluence + Jira(Forge) 묶음 제안은 사용자가 나중에 검토하기로 했습니다. inbox에 남깁니다. 사용자 원칙: 무료와 유료 버전의 기능 차이는 없고, 유료 버전은 그 플랫폼에서 쓰기 편하다는 점으로 가치를 낸다.
-6. **EasyCODE:** 사용자가 [EasyCODE](https://www.easycode.de/) 스크린샷을 보여 주며 "내가 만들고 싶은 어플리케이션의 이상향"이라고 밝혔습니다. 요구사항의 상당 부분이 이 프로그램을 본떴다고 합니다.
-7. **inbox 3-2 가시성:** Claude의 첫 제안(종류별 진한 색 + 깊이별 명도 + 그라디언트)이 절반만 Scratch식이었음을 밝혔습니다. 그 뒤 EasyCODE식, 섞은 방식과 함께 세 시안을 그려 비교했습니다([시안 페이지](https://claude.ai/artifact/XVzT38DvGVir97z9j47Aaj)). 사용자는 시안 C를 고르고 색은 테마로 바꿀 수 있게 하자고 했습니다. → [[0013-default-visual-style|ADR-0013]]
+4. **inbox 2-1 Google Drive 앱:** 웹 버전에 Drive 연동(연결 앱, 새로 만들기)을 더하는 방식에 메인테이너가 동의했습니다. → [[0012-google-drive-integration|ADR-0012]], [[01-requirements#2.4 Google Drive]]
+5. **inbox 2-2 유료 버전:** Confluence + Jira(Forge) 묶음 제안은 메인테이너가 나중에 검토하기로 했습니다. inbox에 남깁니다. 메인테이너 원칙: 무료와 유료 버전의 기능 차이는 없고, 유료 버전은 그 플랫폼에서 쓰기 편하다는 점으로 가치를 낸다.
+6. **EasyCODE:** 메인테이너가 [EasyCODE](https://www.easycode.de/) 스크린샷을 보여 주며 "내가 만들고 싶은 어플리케이션의 이상향"이라고 밝혔습니다. 요구사항의 상당 부분이 이 프로그램을 본떴다고 합니다.
+7. **inbox 3-2 가시성:** Claude의 첫 제안(종류별 진한 색 + 깊이별 명도 + 그라디언트)이 절반만 Scratch식이었음을 밝혔습니다. 그 뒤 EasyCODE식, 섞은 방식과 함께 세 시안을 그려 비교했습니다([시안 페이지](https://claude.ai/artifact/XVzT38DvGVir97z9j47Aaj)). 메인테이너는 시안 C를 고르고 색은 테마로 바꿀 수 있게 하자고 했습니다. → [[0013-default-visual-style|ADR-0013]]
 
 ## 결정한 것
 
@@ -53,7 +53,7 @@ date: 2026-10-09
 | 메모 페이지 `inbox.md`, 폴더 `plan/` · `journal/` · `tech-notes/`, 부채 목록 [[debt]] | CLAUDE.md |
 | inbox는 합의한 항목만 지우고, 결정하지 못한 항목은 남김 | CLAUDE.md "세션 시작 시 할 일" |
 | Google Drive 연동은 웹 버전 위에 얹음 | [[0012-google-drive-integration\|ADR-0012]], [[01-requirements#2.4 Google Drive]] |
-| 무료와 유료 버전의 기능 차이는 없음. 유료는 플랫폼 통합의 편의로 가치를 냄 | 사용자 원칙. 유료 버전 검토 때 요구사항에 반영 |
+| 무료와 유료 버전의 기능 차이는 없음. 유료는 플랫폼 통합의 편의로 가치를 냄 | 메인테이너 원칙. 유료 버전 검토 때 요구사항에 반영 |
 | 기본 스타일은 시안 C, 색은 테마로 분리 | [[0013-default-visual-style\|ADR-0013]] |
 
 ## 발견한 위험
