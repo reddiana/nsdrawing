@@ -6,6 +6,7 @@ NS 차트(Nassi-Shneiderman Diagram) 편집기. Obsidian 플러그인 · 데스�
 
 | 폴더 | 용도 |
 | --- | --- |
+| `README.md` | GitHub 방문자를 위한 첫 화면. 저장소 소개와 "Obsidian으로 보라"는 안내. GitHub에서 읽히도록 위키링크 대신 일반 마크다운 링크를 쓴다 |
 | `docs/` | 애플리케이션 문서: 요구사항, 아키텍처, ADR, 설계, 파일 형식 명세. 시작점은 `docs/README.md` (GitHub에서 폴더를 열면 바로 보이도록) |
 | `plan/` | 일하기 위한 기록: 현재 상태(`status.md`), 부채 목록(`debt.md`), 세션 기록(`sessions/`), inbox(`inbox.md`: 세션 사이에 메인테이너가 생각을 적어 두는 페이지) |
 | `journal/` | 이야기하기 위한 여정 기록: 타임라인, 이야기 구성 아이디어, 스크린샷. 누구나 따라 해 볼 용기를 얻도록 쓴다 |
