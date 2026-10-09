@@ -1,0 +1,315 @@
+<title>NS 영역 강조 시안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600&display=swap">
+<style>
+/* Layout: 짧은 머리말 + 같은 다이어그램(시안 C)에 영역 강조 세 가지를 나란히 두는 비교 격자 */
+:root {
+  --bg: #f4f6f9;
+  --panel: #ffffff;
+  --fg: #1c2230;
+  --muted: #5a6476;
+  --line: #d7dde7;
+  --accent: #2c55c9;
+  --paper: #ffffff;
+  --plus: #2a7a3b;
+  --minus: #b0442a;
+  --font: 'IBM Plex Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151b; --panel: #1a1e26; --fg: #e5e8ee; --muted: #9aa3b3;
+    --line: #2b313c; --accent: #8ba7ff; --plus: #7fcf8e; --minus: #f09a84;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151b; --panel: #1a1e26; --fg: #e5e8ee; --muted: #9aa3b3;
+  --line: #2b313c; --accent: #8ba7ff; --plus: #7fcf8e; --minus: #f09a84;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 48px; }
+header { display: grid; gap: 8px; max-width: 68ch; }
+h1 { font-size: 1.6rem; line-height: 1.25; margin: 0; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); }
+.controls { margin-top: 20px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.controls label { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; font-size: 0.93rem; }
+.controls input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.grid { margin-top: 24px; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); align-items: start; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.tag { font-size: 0.75rem; letter-spacing: 0.06em; color: var(--accent); font-weight: 600; }
+.card h2 { font-size: 1.1rem; margin: 0; line-height: 1.35; }
+.card .sub { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.paper { background: var(--paper); border-radius: 6px; padding: 12px; border: 1px solid var(--line); }
+.paper svg { display: block; width: 100%; height: auto; margin: 0 auto; }
+body.gray .paper svg { filter: grayscale(1); }
+ul.pc { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.92rem; }
+ul.pc li { display: grid; grid-template-columns: 1.2em 1fr; }
+ul.pc li::before { font-weight: 600; }
+ul.pc li.p::before { content: "+"; color: var(--plus); }
+ul.pc li.m::before { content: "−"; color: var(--minus); }
+code { font-size: 0.9em; }
+.note { margin-top: 24px; color: var(--muted); font-size: 0.88rem; max-width: 68ch; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>NS 영역 강조 시안</h1>
+    <p>기본 스타일(시안 C)로 그린 같은 NS 차트에서, 참 갈래의 블록 두 개를 영역 하나로 묶었습니다. 영역 이름은 "재시도하며 이벤트 보내기"입니다. 세 카드는 영역을 강조하는 모양만 다릅니다.</p>
+  </header>
+  <div class="controls">
+    <label for="fold"><input type="checkbox" id="fold"> 영역 접기</label>
+    <label for="gray"><input type="checkbox" id="gray"> 흑백 인쇄로 보기</label>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <div class="tag">A · EasyCODE식 · 추천</div>
+      <h2>왼쪽 세로 막대 + 위에 이름 띠</h2>
+      <p class="sub">EasyCODE의 <code>#ifdef</code> 영역처럼, 이름 띠가 영역의 머리가 되고 왼쪽 막대가 범위를 보여 줍니다.</p>
+      <div class="paper" id="d-a"></div>
+      <ul class="pc">
+        <li class="p">이름과 접기 표시(▾ ▸)를 둘 자리가 있습니다.</li>
+        <li class="p">막대와 띠는 모양이라서 흑백 인쇄에서도 보입니다.</li>
+        <li class="p">접어도 펴도 같은 띠가 남아서, 어디가 영역인지 헷갈리지 않습니다.</li>
+        <li class="m">막대와 띠만큼 폭과 높이를 조금 더 차지합니다.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <div class="tag">B · 배경 칠하기</div>
+      <h2>영역 전체에 옅은 색</h2>
+      <p class="sub">영역에 든 블록 위에 옅은 노랑을 겹쳐 칠합니다. 형광펜과 같은 방식입니다.</p>
+      <div class="paper" id="d-b"></div>
+      <ul class="pc">
+        <li class="p">펼친 상태에서 가장 눈에 잘 띕니다.</li>
+        <li class="p">레이아웃이 바뀌지 않습니다.</li>
+        <li class="m">반복·분기의 옅은 색조와 섞여 블록 종류가 덜 구분됩니다.</li>
+        <li class="m">이름 둘 자리가 없어서, 접었을 때만 이름이 보입니다.</li>
+        <li class="m">흑백 인쇄에서는 거의 사라집니다.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <div class="tag">C · 굵은 테두리</div>
+      <h2>영역 둘레를 굵게</h2>
+      <p class="sub">영역 바깥선을 굵은 주황 선으로 다시 그립니다.</p>
+      <div class="paper" id="d-c"></div>
+      <ul class="pc">
+        <li class="p">가장 단순하고, 레이아웃이 바뀌지 않습니다.</li>
+        <li class="p">흑백 인쇄에서도 굵기로 구분됩니다.</li>
+        <li class="m">이름 둘 자리가 없어서, 접었을 때만 이름이 보입니다.</li>
+        <li class="m">영역이 포개지거나 맞붙으면 굵은 선끼리 겹칩니다.</li>
+      </ul>
+    </section>
+  </div>
+
+  <p class="note">블록 하나를 강조할 때도 "블록 하나짜리 영역"으로 같은 모양을 씁니다. 강조 색은 테마에서 바꿀 수 있습니다(ADR-0013). 영역 안에 또 영역을 둘 수 있는지는 아직 정하지 않았습니다.</p>
+</div>
+
+<script>
+const FONT_FAMILY = "'IBM Plex Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif";
+const FONT = "13px " + FONT_FAMILY;
+const LH = 18, PX = 8, PY = 6, BAR = 22, CALL = 7, ASC = 13;
+
+const model = {
+  header: ["// 버튼을 누르면 이벤트를 보낸다.", "// 너무 빠른 반복 입력은 떨림으로 보고 무시한다.", "void onButtonPressed()"],
+  body: [
+    { t: "s", lines: ["now = millis();"] },
+    { t: "if", cond: "if (now - lastPress > DEBOUNCE_MS)",
+      then: [
+        { t: "region", name: "재시도하며 이벤트 보내기", body: [
+          { t: "s", lines: ["lastPress = now;", "retry = 0;"] },
+          { t: "while", cond: "while (retry < MAX_RETRY)", body: [
+            { t: "call", lines: ["ok = sendEvent(EVT_BUTTON);"] },
+            { t: "if", cond: "if (ok)",
+              then: [{ t: "s", lines: ["break;"] }],
+              else: [{ t: "s", lines: ["retry++;", "// 잠시 후 다시 시도", "delay(5);"] }] }
+          ] }
+        ] }
+      ],
+      else: [{ t: "s", lines: ["// 떨림으로 보고 무시"] }] },
+    { t: "s", lines: ["led.toggle();"] }
+  ]
+};
+
+const BASE = {
+  stroke: "#7e9ccf", sw: 1, gradient: false, syntax: true,
+  fill(kind) {
+    if (kind === "if") return "#f6ebdc";
+    if (kind === "loop") return "#dce6f6";
+    if (kind === "call") return "#e8e1f4";
+    if (kind === "header") return "#ffffff";
+    return "#edf0f5";
+  },
+  ink() { return "#151a22"; },
+  label: "#1f45d6"
+};
+const STYLES = { a: BASE, b: BASE, c: BASE };
+// 영역 강조 색 (테마에서 바꿀 값)
+const HI = { bar: "#d8962e", band: "#fbecd0", bandInk: "#5a3a06", wash: "#ffd86b", border: "#d0821c" };
+const RB = 8;
+let REG = "a", FOLDED = false;
+const KEYWORD = "#1f45d6", COMMENT = "#2e8b2e";
+
+let ctx;
+const tw = s => ctx.measureText(s).width;
+const maxW = lines => Math.max(...lines.map(tw));
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+function m(n) {
+  switch (n.t) {
+    case "s": return maxW(n.lines) + 2 * PX;
+    case "call": return maxW(n.lines) + 2 * PX + 2 * CALL;
+    case "if": return Math.max(tw(n.cond) + 2 * PX + 48, mSeq(n.then) + mSeq(n.else));
+    case "while": return Math.max(tw(n.cond) + 2 * PX, BAR + mSeq(n.body));
+    case "region": {
+      const name = tw("▾ " + n.name) + 2 * PX;
+      return REG === "a" ? Math.max(RB + mSeq(n.body), name + RB) : Math.max(mSeq(n.body), name);
+    }
+  }
+}
+function mSeq(arr) { return arr.length ? Math.max(...arr.map(m)) : 60; }
+function split(n, w) {
+  const a = mSeq(n.then), b = mSeq(n.else);
+  return Math.round(a + (w - a - b) * a / (a + b));
+}
+function h(n, w) {
+  switch (n.t) {
+    case "s": case "call": return n.lines.length * LH + 2 * PY;
+    case "if": { const a = split(n, w); return 2 * LH + 2 * PY + Math.max(hSeq(n.then, a), hSeq(n.else, w - a)); }
+    case "while": return LH + 2 * PY + hSeq(n.body, w - BAR);
+    case "region": {
+      const band = LH + 2 * PY;
+      if (FOLDED) return band;
+      return REG === "a" ? band + hSeq(n.body, w - RB) : hSeq(n.body, w);
+    }
+  }
+}
+function hSeq(arr, w) { return arr.length ? arr.reduce((s, n) => s + h(n, w), 0) : LH + 2 * PY; }
+
+function lighten(hex, t) {
+  const v = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  return "#" + v.map(c => Math.round(c + (255 - c) * t).toString(16).padStart(2, "0")).join("");
+}
+
+function render(key) {
+  REG = key;
+  const S = STYLES[key];
+  const grads = new Map();
+  const paint = c => {
+    if (!S.gradient || c === "#ffffff") return c;
+    const id = "g-" + key + "-" + c.slice(1);
+    grads.set(id, c);
+    return "url(#" + id + ")";
+  };
+  const out = [];
+  const rect = (x, y, w, hh, c) => out.push(`<rect x="${x}" y="${y}" width="${w}" height="${hh}" fill="${paint(c)}" stroke="${S.stroke}" stroke-width="${S.sw}"/>`);
+  const line = (x1, y1, x2, y2) => out.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${S.stroke}" stroke-width="${S.sw}"/>`);
+  const tsp = (s, c) => s ? `<tspan fill="${c}">${esc(s)}</tspan>` : "";
+  const text = (s, x, y, role, anchor) => {
+    const base = S.ink(role);
+    let body;
+    if (!S.syntax) body = tsp(s, base);
+    else {
+      const i = s.indexOf("//");
+      const code = i >= 0 ? s.slice(0, i) : s;
+      const com = i >= 0 ? s.slice(i) : "";
+      body = code.split(/\b(if|else|while|for|void|break|return)\b/)
+        .map((part, k) => tsp(part, k % 2 ? KEYWORD : base)).join("") + tsp(com, COMMENT);
+    }
+    out.push(`<text x="${x}" y="${y}" xml:space="preserve"${anchor ? ` text-anchor="${anchor}"` : ""}>${body}</text>`);
+  };
+
+  function drawSeq(arr, x, y, w, H, d) {
+    if (!arr.length) { rect(x, y, w, H, S.fill("stmt", d)); return; }
+    let yy = y;
+    arr.forEach((n, i) => {
+      const hh = i === arr.length - 1 ? y + H - yy : h(n, w);
+      draw(n, x, yy, w, hh, d);
+      yy += hh;
+    });
+  }
+  function draw(n, x, y, w, H, d) {
+    if (n.t === "s") {
+      rect(x, y, w, H, S.fill("stmt", d));
+      n.lines.forEach((l, i) => text(l, x + PX, y + PY + LH * i + ASC, "stmt"));
+    } else if (n.t === "call") {
+      rect(x, y, w, H, S.fill("call", d));
+      line(x + CALL, y, x + CALL, y + H);
+      line(x + w - CALL, y, x + w - CALL, y + H);
+      n.lines.forEach((l, i) => text(l, x + CALL + PX, y + PY + LH * i + ASC, "call"));
+    } else if (n.t === "if") {
+      const hh = 2 * LH + 2 * PY, a = split(n, w), ax = x + a, ay = y + hh;
+      rect(x, y, w, hh, S.fill("if", d));
+      line(x, y, ax, ay);
+      line(x + w, y, ax, ay);
+      const ct = tw(n.cond);
+      const cx = Math.min(Math.max(ax - ct / 2, x + PX), x + w - PX - ct);
+      text(n.cond, cx, y + PY + ASC, "if");
+      out.push(`<text x="${x + PX}" y="${y + PY + LH + ASC}" fill="${S.label}">then</text>`);
+      out.push(`<text x="${x + w - PX}" y="${y + PY + LH + ASC}" fill="${S.label}" text-anchor="end">else</text>`);
+      drawSeq(n.then, x, ay, a, H - hh, d + 1);
+      drawSeq(n.else, ax, ay, w - a, H - hh, d + 1);
+    } else if (n.t === "region") {
+      const band = LH + 2 * PY;
+      const label = (FOLDED ? "▸ " : "▾ ") + n.name;
+      const nameText = (tx, ty, c) => out.push(`<text x="${tx}" y="${ty}" fill="${c}" font-weight="600">${esc(label)}</text>`);
+      if (REG === "a") {
+        const bh = FOLDED ? H : band;
+        out.push(`<rect x="${x}" y="${y}" width="${w}" height="${bh}" fill="${HI.band}" stroke="${S.stroke}" stroke-width="${S.sw}"/>`);
+        if (!FOLDED) drawSeq(n.body, x + RB, y + band, w - RB, H - band, d);
+        out.push(`<rect x="${x}" y="${y}" width="${RB}" height="${H}" fill="${HI.bar}" stroke="${S.stroke}" stroke-width="${S.sw}"/>`);
+        nameText(x + RB + PX, y + PY + ASC, HI.bandInk);
+      } else if (REG === "b") {
+        if (FOLDED) {
+          out.push(`<rect x="${x}" y="${y}" width="${w}" height="${H}" fill="${HI.wash}" fill-opacity="0.55" stroke="${S.stroke}" stroke-width="${S.sw}"/>`);
+          nameText(x + PX, y + PY + ASC, HI.bandInk);
+        } else {
+          drawSeq(n.body, x, y, w, H, d);
+          out.push(`<rect x="${x}" y="${y}" width="${w}" height="${H}" fill="${HI.wash}" fill-opacity="0.45" style="mix-blend-mode:multiply"/>`);
+        }
+      } else {
+        if (FOLDED) {
+          rect(x, y, w, H, S.fill("stmt", d));
+          nameText(x + PX, y + PY + ASC, S.ink("stmt"));
+        } else drawSeq(n.body, x, y, w, H, d);
+        out.push(`<rect x="${x + 1.5}" y="${y + 1.5}" width="${w - 3}" height="${H - 3}" fill="none" stroke="${HI.border}" stroke-width="3"/>`);
+      }
+    } else if (n.t === "while") {
+      const hh = LH + 2 * PY;
+      out.push(`<path d="M${x} ${y}H${x + w}V${y + hh}H${x + BAR}V${y + H}H${x}Z" fill="${paint(S.fill("loop", d))}" stroke="${S.stroke}" stroke-width="${S.sw}"/>`);
+      text(n.cond, x + PX, y + PY + ASC, "loop");
+      drawSeq(n.body, x + BAR, y + hh, w - BAR, H - hh, d + 1);
+    }
+  }
+
+  const W = Math.ceil(Math.max(mSeq(model.body), maxW(model.header) + 2 * PX, 360));
+  const HH = model.header.length * LH + 2 * PY;
+  const BH = hSeq(model.body, W);
+  rect(0, 0, W, HH, S.fill("header", 0));
+  model.header.forEach((l, i) => text(l, PX, PY + LH * i + ASC, "header"));
+  drawSeq(model.body, 0, HH, W, BH, 0);
+
+  const defs = [...grads].map(([id, c]) =>
+    `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${lighten(c, 0.4)}"/><stop offset="1" stop-color="${c}"/></linearGradient>`).join("");
+  const vw = W + 4, vh = HH + BH + 4;
+  document.getElementById("d-" + key).innerHTML =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 ${vw} ${vh}" style="max-width:${vw}px" font-family="${FONT_FAMILY.replace(/"/g, "'")}" font-size="13" role="img" aria-label="영역 강조 시안 ${key.toUpperCase()}"><defs>${defs}</defs>${out.join("")}</svg>`;
+}
+
+function go() {
+  FOLDED = fold.checked;
+  ctx = document.createElement("canvas").getContext("2d");
+  ctx.font = FONT;
+  ["a", "b", "c"].forEach(render);
+}
+const fold = document.getElementById("fold");
+fold.addEventListener("change", () => { FOLDED = fold.checked; ["a", "b", "c"].forEach(render); });
+const gray = document.getElementById("gray");
+gray.addEventListener("change", () => document.body.classList.toggle("gray", gray.checked));
+if (document.fonts && document.fonts.load) {
+  document.fonts.load(FONT, "가a").then(go, go);
+} else go();
+</script>
