@@ -1,0 +1,1076 @@
+<title>NSDrawing 프로토타입</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* 화면 구성: 위 도구 모음 · 가운데 캔버스(종이 한 장) · 오른쪽 안내 패널. 그림 색은 기본 스타일 C로 고정 */
+:root {
+  --bg: #eef1f6;
+  --panel: #ffffff;
+  --fg: #1c2230;
+  --muted: #5a6476;
+  --line: #d4dbe6;
+  --accent: #2c55c9;
+  --accent-soft: #e4eafb;
+  --warn: #b35a10;
+  --paper: #ffffff;
+  --dots: #d3d9e4;
+  --font: 'IBM Plex Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  --mono: 'IBM Plex Mono', 'IBM Plex Sans KR', Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151b; --panel: #1a1e26; --fg: #e5e8ee; --muted: #9aa3b3; --line: #2b313c;
+    --accent: #8ba7ff; --accent-soft: #232c45; --warn: #f0a560; --paper: #ffffff; --dots: #262c37;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151b; --panel: #1a1e26; --fg: #e5e8ee; --muted: #9aa3b3; --line: #2b313c;
+  --accent: #8ba7ff; --accent-soft: #232c45; --warn: #f0a560; --paper: #ffffff; --dots: #262c37;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 14px; }
+* { box-sizing: border-box; }
+.app { height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+
+.bar { background: var(--panel); border-bottom: 1px solid var(--line); padding-block: 8px; padding-inline: 16px; display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.brand { display: flex; flex-direction: column; line-height: 1.2; margin-right: 6px; }
+.brand b { font-weight: 600; font-size: 15px; letter-spacing: .01em; }
+.brand span { font-size: 11px; color: var(--muted); }
+.grp { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.lbl { font-size: 11px; color: var(--muted); letter-spacing: .04em; margin-right: 2px; }
+button, select { font: inherit; font-size: 13px; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 5px; padding: 4px 9px; cursor: pointer; }
+button:hover { background: var(--accent-soft); border-color: var(--accent); }
+button:focus-visible, select:focus-visible, .stage:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+select { background: var(--panel); }
+kbd { font-family: var(--mono); font-size: 11.5px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; background: var(--bg); white-space: nowrap; }
+
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 0; }
+.stage { position: relative; overflow: auto; min-width: 0; background-color: var(--bg); background-image: radial-gradient(var(--dots) 1px, transparent 1px); background-size: 18px 18px; padding: 20px; outline: none; }
+.paper { position: relative; display: inline-block; background: var(--paper); border-radius: 4px; box-shadow: 0 1px 3px rgba(20,30,60,.12), 0 6px 20px rgba(20,30,60,.06); }
+.paper svg { display: block; user-select: none; }
+.opts { position: sticky; top: 0; left: 0; z-index: 3; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-bottom: 14px; padding: 6px 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; width: fit-content; max-width: 100%; font-size: 13px; }
+.opts label { display: flex; gap: 5px; align-items: center; cursor: pointer; }
+.zoom { display: flex; gap: 4px; align-items: center; }
+.zoom output { min-width: 3.5em; text-align: center; font-variant-numeric: tabular-nums; font-size: 12px; color: var(--muted); }
+
+#editor { position: absolute; z-index: 2; resize: none; overflow: hidden; border: 2px solid #2c55c9; border-radius: 2px; background: #ffffff; color: #151a22; outline: none; box-shadow: 0 2px 10px rgba(44,85,201,.25); line-height: 18px; white-space: pre; }
+
+.side { border-left: 1px solid var(--line); background: var(--panel); overflow: auto; padding-block: 14px; padding-inline: 18px; min-width: 0; }
+.side h2 { font-size: 13px; font-weight: 600; margin: 18px 0 8px; letter-spacing: .02em; }
+.side h2:first-child { margin-top: 0; }
+.side p, .side li { font-size: 13px; line-height: 1.6; }
+.side p { margin: 0 0 8px; color: var(--muted); }
+.keys { display: grid; grid-template-columns: auto 1fr; gap: 5px 10px; font-size: 12.5px; align-items: baseline; }
+.keys dt { text-align: right; }
+.keys dd { margin: 0; color: var(--muted); }
+.qs { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; }
+.qs li::marker { color: var(--accent); font-weight: 600; }
+.qs b { font-weight: 600; }
+.qs .ref { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.note { border-left: 3px solid var(--warn); padding: 6px 10px; background: var(--bg); border-radius: 0 4px 4px 0; font-size: 12.5px; color: var(--fg) !important; }
+
+.status { background: var(--panel); border-top: 1px solid var(--line); padding-block: 6px; padding-inline: 16px; font-size: 12.5px; color: var(--muted); min-height: 30px; display: flex; gap: 14px; align-items: center; }
+.status .msg { color: var(--fg); }
+.status .msg.flash { color: var(--accent); font-weight: 500; }
+.status .where { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+.menu { position: fixed; z-index: 20; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,.18); padding: 4px; min-width: 210px; }
+.menu button { display: flex; width: 100%; justify-content: space-between; gap: 16px; border: 0; border-radius: 4px; text-align: left; padding: 5px 10px; }
+.menu button span { color: var(--muted); font-family: var(--mono); font-size: 11.5px; }
+.menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+
+.modal { position: fixed; inset: 0; z-index: 30; background: rgba(10,14,22,.45); display: grid; place-items: center; padding: 16px; }
+.modal .box { background: var(--panel); border-radius: 8px; padding: 16px; width: min(860px, 100%); max-height: 90%; display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; min-height: 0; }
+.modal h3 { margin: 0; font-size: 15px; }
+.modal p { margin: 0; color: var(--muted); font-size: 13px; }
+.modal textarea { width: 100%; min-height: 320px; font-family: var(--mono); font-size: 12px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 10px; resize: vertical; }
+.modal .row { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+
+@media (max-width: 860px) {
+  .main { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(360px, 1fr) auto; }
+  .side { border-left: 0; border-top: 1px solid var(--line); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="app">
+  <header class="bar">
+    <div class="brand"><b>NSDrawing</b><span>요구사항 점검용 프로토타입 · 버리는 코드</span></div>
+    <div class="grp">
+      <button data-cmd="new" title="빈 다이어그램">새로</button>
+      <button data-cmd="open" title=".ns.svg 파일 열기">열기</button>
+      <button data-cmd="svg" title="저장될 SVG 내용 보기">SVG 보기</button>
+      <button data-cmd="download" title=".ns.svg 받기">받기</button>
+    </div>
+    <div class="grp">
+      <span class="lbl">예제</span>
+      <button data-cmd="exCode">코드식</button>
+      <button data-cmd="exText">문장식</button>
+    </div>
+    <div class="grp">
+      <span class="lbl">넣기</span>
+      <select id="pos" title="넣을 위치 (O 키로 바꾸기)">
+        <option value="after">뒤에</option>
+        <option value="before">앞에</option>
+        <option value="inside">안쪽에</option>
+      </select>
+      <button data-cmd="ins:process">처리</button>
+      <button data-cmd="ins:if">If</button>
+      <button data-cmd="ins:while">While</button>
+      <button data-cmd="ins:dowhile">Do-While</button>
+      <button data-cmd="event">이벤트 머리</button>
+    </div>
+    <div class="grp">
+      <span class="lbl">감싸기</span>
+      <button data-cmd="wrap:while">While</button>
+      <button data-cmd="wrap:dowhile">Do-While</button>
+      <button data-cmd="wrap:if">If</button>
+      <button data-cmd="unwrap">풀기</button>
+    </div>
+    <div class="grp">
+      <span class="lbl">보기</span>
+      <button data-cmd="fold">접기·펴기</button>
+      <button data-cmd="region">강조</button>
+      <button data-cmd="unregion">강조 지우기</button>
+    </div>
+    <div class="grp">
+      <button data-cmd="undo" title="Ctrl+Z">↶ 되돌리기</button>
+      <button data-cmd="redo" title="Ctrl+Y">↷ 다시</button>
+      <button data-cmd="del" title="Delete">지우기</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <section class="stage" id="stage" tabindex="0" aria-label="다이어그램">
+      <div class="opts">
+        <label><input type="checkbox" id="optSyntax" checked> 구문 강조</label>
+        <label><input type="checkbox" id="optMono" checked> 고정폭 글꼴</label>
+        <label><input type="checkbox" id="optRanges"> 이름 붙은 범위 보기</label>
+        <div class="zoom">
+          <button data-cmd="zoomOut" aria-label="축소">−</button>
+          <output id="zoomOut">100%</output>
+          <button data-cmd="zoomIn" aria-label="확대">+</button>
+        </div>
+      </div>
+      <div class="paper" id="paper">
+        <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <textarea id="editor" hidden spellcheck="false"></textarea>
+      </div>
+    </section>
+
+    <aside class="side">
+      <h2>써 보는 법</h2>
+      <p>블록을 클릭해 고르고 키보드로 다룹니다. 오른쪽 클릭하면 메뉴가 나옵니다. 고친 내용은 이 브라우저에 남습니다.</p>
+      <dl class="keys">
+        <dt><kbd>↑</kbd> <kbd>↓</kbd></dt><dd>그림 순서대로 이동</dd>
+        <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>바깥 블록 / 안쪽 첫 블록</dd>
+        <dt><kbd>Shift</kbd>+클릭, <kbd>Shift</kbd>+<kbd>↑↓</kbd></dt><dd>범위 고르기 (같은 부모로 자동 확장)</dd>
+        <dt><kbd>Enter</kbd> <kbd>F2</kbd> 더블클릭</dt><dd>글자 고치기 (줄바꿈은 <kbd>Shift</kbd>+<kbd>Enter</kbd>)</dd>
+        <dt><kbd>P</kbd> <kbd>I</kbd> <kbd>W</kbd> <kbd>D</kbd></dt><dd>처리 · If · While · Do-While 넣기. 위치는 도구 모음, <kbd>Shift</kbd>를 같이 누르면 앞에</dd>
+        <dt><kbd>O</kbd></dt><dd>넣을 위치 바꾸기 (뒤에 → 앞에 → 안쪽에)</dd>
+        <dt><kbd>E</kbd></dt><dd>이벤트 머리 달기·떼기</dd>
+        <dt><kbd>S</kbd> 다음 <kbd>W</kbd>/<kbd>D</kbd>/<kbd>I</kbd></dt><dd>감싸기</dd>
+        <dt><kbd>U</kbd></dt><dd>풀기</dd>
+        <dt><kbd>F</kbd></dt><dd>접기 · 펴기</dd>
+        <dt><kbd>H</kbd> / <kbd>Shift</kbd>+<kbd>H</kbd></dt><dd>강조 영역 만들기·넓히기 / 지우기</dd>
+        <dt><kbd>Delete</kbd></dt><dd>지우기</dd>
+        <dt><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Y</kbd></dt><dd>되돌리기 / 다시</dd>
+        <dt><kbd>Ctrl</kbd>+휠</dt><dd>확대·축소</dd>
+      </dl>
+
+      <h2>만들며 생긴 질문</h2>
+      <p>요구사항에 답이 없어서 프로토타입에서 임시로 정한 것들입니다. 써 보고 맞는지 알려 주세요.</p>
+      <ol class="qs">
+        <li><b>펼친 뒤에도 이름 붙은 범위가 남습니다.</b> 이름을 모델에 두니(ADR-0017) 펼쳐도 범위가 보이지 않게 남아 있습니다. 위의 "이름 붙은 범위 보기"를 켜면 점선으로 보입니다. 평소에도 보여야 할까요? 지우는 방법은 "풀기"(<kbd>U</kbd>)로 해 두었습니다. <span class="ref">^edit-fold-range</span></li>
+        <li><b>기본 이름을 고른 경우.</b> 처음 접을 때 Enter·Esc로 기본 이름을 고르면, "이미 물어봤음"을 파일에 남겨야 다음에 묻지 않습니다. 그래서 이름 없이도 범위가 저장됩니다. <span class="ref">^edit-fold-range</span></li>
+        <li><b>안쪽 깊은 곳에 강조 영역이 있으면?</b> While 안에 강조 영역이 있을 때 그 While을 포함해 강조하면, 넓힐 수도(부모가 다름) 새로 만들 수도(중첩 금지) 없습니다. 지금은 거절합니다. <span class="ref">^edit-region</span></li>
+        <li><b>짧은 갈래의 빈 공간.</b> If의 두 갈래 높이가 다르면, 짧은 쪽 마지막 블록을 늘려 채웠습니다. 빈 칸을 따로 그리는 방법도 있습니다. <span class="ref">^lay-branch-width</span></li>
+        <li><b>넣기 단축키.</b> 위치(뒤·앞·안쪽)를 도구 모음에서 고르는 방식입니다. 브라우저가 Alt·Ctrl 조합을 많이 가져가서, 감싸기는 <kbd>S</kbd> 다음 글자를 누르는 두 번 누르기로 했습니다. <span class="ref">^edit-keyboard</span></li>
+        <li><b>고른 상태에서 바로 타자를 치면?</b> 엑셀처럼 바로 글자 고치기로 들어갈까요? 지금은 단축키로 쓰여서 아무 일도 없습니다. <span class="ref">^edit-basic</span></li>
+        <li><b>처리 블록 하나 접기.</b> 블록 하나를 <kbd>F</kbd>로 접으면 블록 하나짜리 범위가 생깁니다. 막을까요? <span class="ref">^edit-fold-range</span></li>
+        <li><b>접기는 되돌리기 대상이 아닙니다.</b> 접힘은 보기 상태라(ADR-0016) <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리지 않습니다. 단, 처음 접을 때 범위가 생기는 것은 되돌립니다. <span class="ref">^edit-undo</span></li>
+        <li><b>이벤트 머리 위치.</b> 머리는 다이어그램 맨 위 하나뿐이라 고르고 지울 수만 있고, 옮기거나 감쌀 수 없습니다. 머리 "뒤에" 넣으면 본문 맨 앞에 들어갑니다. <span class="ref">^blk-event</span></li>
+        <li><b>블록 글자: 코드인가 문장인가.</b> 예제 두 개로 같은 로직을 비교해 보세요. 문장식에서는 구문 강조가 거의 하는 일이 없습니다. <span class="ref">미결정 사항</span></li>
+      </ol>
+
+      <h2>이 프로토타입에 없는 것</h2>
+      <p>Obsidian · 데스크톱 · Drive, 테마, PNG 내보내기, 정확한 텍스트 폭, 복사·붙여넣기, 드래그. 이 코드는 아키텍처 설계 전에 버립니다.</p>
+      <p class="note">"받기"를 누르면 claude.ai가 저장할지 한 번 묻습니다. 받은 <code>diagram.ns.svg</code>를 "열기"로 다시 열어 보세요. 저장소의 <code>journal/assets/2026-10-10-ns-prototype.html</code>을 브라우저로 직접 열어도 됩니다.</p>
+      <p>그림은 어두운 테마에서도 흰 종이에 그립니다. 저장되는 SVG의 색이 정해지지 않았기 때문입니다 (ADR-0013 열린 질문).</p>
+    </aside>
+  </div>
+
+  <footer class="status" aria-live="polite">
+    <span class="msg" id="msg">블록을 클릭해 보세요.</span>
+    <span class="where" id="where"></span>
+  </footer>
+</div>
+
+<div class="menu" id="menu" hidden></div>
+<input type="file" id="file" accept=".svg,.ns,image/svg+xml" hidden>
+
+<div class="modal" id="modal" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <h3 id="mTitle">저장될 .ns.svg 내용</h3>
+    <p>그림 부분은 모두 펼친 모양이고, 모델(JSON)은 <code>&lt;metadata&gt;</code> 안에 있습니다. 접힘 상태는 들어가지 않습니다.</p>
+    <textarea id="svgText" readonly spellcheck="false"></textarea>
+    <div class="row">
+      <button data-cmd="copySvg">복사</button>
+      <button data-cmd="download">받기</button>
+      <button data-cmd="closeModal">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const svg = $('#svg'), stage = $('#stage'), editor = $('#editor'), menu = $('#menu');
+
+/* ---------- 모델 ---------- */
+let uid = 1;
+const nid = () => 'n' + (uid++);
+const P = (text = '') => ({ id: nid(), type: 'process', text });
+function mk(type, text = '') {
+  if (type === 'process') return P(text);
+  if (type === 'if') return { id: nid(), type, text, yes: [P()], no: [P()] };
+  return { id: nid(), type, text, body: [P()] };
+}
+const SLOTS = { if: ['yes', 'no'], while: ['body'], dowhile: ['body'], range: ['children'] };
+const isCtrl = n => n.type === 'if' || n.type === 'while' || n.type === 'dowhile';
+const isHL = n => n.type === 'range' && n.highlight;
+
+let doc = { event: null, body: [P()] };
+let folded = new Set();          // 보기 상태: 파일에 넣지 않음 (ADR-0016)
+let sel = null;                  // { root, anchor, focus } — anchor·focus는 같은 목록 안
+let undoStack = [], redoStack = [];
+let idx = new Map();
+let editing = null;
+let chord = null;
+let zoom = 1;
+const opts = { syntax: true, mono: true, showRanges: false };
+
+function reindex() {
+  idx = new Map();
+  const walk = (list, parent, slot) => list.forEach((n, i) => {
+    idx.set(n.id, { node: n, list, index: i, parent, slot });
+    (SLOTS[n.type] || []).forEach(s => walk(n[s], n, s));
+  });
+  walk(doc.body, null, 'body');
+}
+function normalize() {
+  // 빈 범위는 없애고, 빈 갈래는 빈 처리 블록으로 채운다 (^nfr-integrity)
+  const fix = (list, mustFill) => {
+    for (let i = list.length - 1; i >= 0; i--) {
+      const n = list[i];
+      (SLOTS[n.type] || []).forEach(s => fix(n[s], n.type !== 'range'));
+      if (n.type === 'range' && n.children.length === 0) { list.splice(i, 1); folded.delete(n.id); }
+    }
+    if (mustFill && list.length === 0) list.push(P());
+  };
+  fix(doc.body, true);
+  reindex();
+}
+function fixUid() {
+  let max = 0;
+  const walk = list => list.forEach(n => {
+    const k = parseInt(String(n.id).replace(/\D/g, ''), 10);
+    if (k > max) max = k;
+    (SLOTS[n.type] || []).forEach(s => walk(n[s]));
+  });
+  walk(doc.body);
+  uid = max + 1;
+}
+const countBlocks = list => list.reduce((a, n) =>
+  a + (n.type === 'range' ? 0 : 1) + (SLOTS[n.type] || []).reduce((b, s) => b + countBlocks(n[s]), 0), 0);
+function firstText(n) {
+  if (n.type === 'range') return n.name || firstText(n.children[0]);
+  const t = (n.text || '').split('\n')[0];
+  if (!t) return '(빈 블록)';
+  return t.length > 22 ? t.slice(0, 21) + '…' : t;
+}
+function defaultName(g) {
+  const k = g.children.length - 1;
+  return k > 0 ? `${firstText(g.children[0])} 외 ${k}개` : firstText(g.children[0]);
+}
+const foldLabel = g => g.name || defaultName(g);
+
+/* ---------- 되돌리기 ---------- */
+const snap = () => JSON.stringify(doc);
+function pushUndo() { undoStack.push(snap()); if (undoStack.length > 300) undoStack.shift(); redoStack = []; }
+function apply(fn) { pushUndo(); fn(); normalize(); fixSel(); render(); save(); }
+function undo() {
+  if (!undoStack.length) return say('되돌릴 것이 없습니다');
+  redoStack.push(snap()); doc = JSON.parse(undoStack.pop());
+  normalize(); fixSel(); render(); save(); say('되돌렸습니다');
+}
+function redo() {
+  if (!redoStack.length) return say('다시 할 것이 없습니다');
+  undoStack.push(snap()); doc = JSON.parse(redoStack.pop());
+  normalize(); fixSel(); render(); save(); say('다시 했습니다');
+}
+
+/* ---------- 선택 ---------- */
+const exists = id => id === 'event' ? doc.event != null : idx.has(id);
+function fixSel() {
+  if (!sel) return;
+  if (!exists(sel.anchor) || !exists(sel.focus)) { sel = null; return; }
+  if (sel.anchor !== 'event' && idx.get(sel.anchor).list !== idx.get(sel.focus).list) sel.focus = sel.anchor;
+  if (!exists(sel.root)) sel.root = sel.anchor;
+}
+const selectOne = id => { sel = id ? { root: id, anchor: id, focus: id } : null; };
+function selRange() {
+  if (!sel) return null;
+  if (sel.anchor === 'event') return { event: true };
+  const a = idx.get(sel.anchor), f = idx.get(sel.focus);
+  if (!a || !f) return null;
+  const lo = Math.min(a.index, f.index), hi = Math.max(a.index, f.index);
+  return { list: a.list, lo, hi, items: a.list.slice(lo, hi + 1), parent: a.parent };
+}
+function ancestors(id) {
+  const out = [];
+  let e = idx.get(id);
+  while (e) { out.push(e.node.id); e = e.parent ? idx.get(e.parent.id) : null; }
+  return out;
+}
+function selectTo(id) {
+  // Shift+클릭: 두 블록을 함께 담는 가장 가까운 같은 부모 범위로 넓힌다 (ADR-0008)
+  if (!sel || sel.root === 'event' || id === 'event') return selectOne(id);
+  const A = ancestors(sel.root), C = ancestors(id);
+  for (const x of A) {
+    const lx = idx.get(x).list;
+    const y = C.find(c => idx.get(c).list === lx);
+    if (y) { sel = { root: sel.root, anchor: x, focus: y }; return; }
+  }
+}
+function visibleOrder() {
+  const out = [];
+  if (doc.event != null) out.push('event');
+  const walk = list => list.forEach(n => {
+    if (n.type === 'range') { if (folded.has(n.id)) out.push(n.id); else walk(n.children); return; }
+    out.push(n.id);
+    if (folded.has(n.id)) return;
+    (SLOTS[n.type] || []).forEach(s => walk(n[s]));
+  });
+  walk(doc.body);
+  return out;
+}
+function orderPos(order, id) {
+  let i = order.indexOf(id);
+  if (i < 0) i = order.findIndex(o => o !== 'event' && ancestors(o).includes(id));
+  return i;
+}
+function move(key, shift) {
+  const order = visibleOrder();
+  if (!sel) { selectOne(order[0]); return render(); }
+  if (shift && sel.anchor !== 'event') {
+    const f = idx.get(sel.focus);
+    const j = f.index + (key === 'ArrowDown' ? 1 : -1);
+    if (j >= 0 && j < f.list.length) sel.focus = f.list[j].id;
+    else say('같은 부모 안에서만 범위를 넓힐 수 있습니다');
+    return render();
+  }
+  const cur = sel.focus, i = orderPos(order, cur);
+  let next = null;
+  if (key === 'ArrowDown') next = order[i + 1];
+  else if (key === 'ArrowUp') next = order[i - 1];
+  else if (key === 'ArrowLeft') {
+    if (cur === 'event') return;
+    let p = idx.get(cur).parent;
+    while (p && p.type === 'range') p = idx.get(p.id).parent;
+    next = p ? p.id : null;
+  } else if (key === 'ArrowRight') {
+    const cand = order[i + 1];
+    if (cand && cand !== 'event' && cur !== 'event' && ancestors(cand).includes(cur)) next = cand;
+  }
+  if (next) { selectOne(next); render(); }
+}
+
+/* ---------- 레이아웃 ---------- */
+const K = { padX: 10, padY: 7, lh: 18, strip: 22, ifLab: 16, hat: 16, minW: 52 };
+const FAM_MONO = "IBM Plex Mono, IBM Plex Sans KR, Consolas, Malgun Gothic, monospace";
+const FAM_SANS = "IBM Plex Sans KR, Malgun Gothic, Apple SD Gothic Neo, sans-serif";
+const cv = document.createElement('canvas').getContext('2d');
+const fam = () => opts.mono ? FAM_MONO : FAM_SANS;
+function tsize(text) {
+  cv.font = `13px ${fam()}`;
+  const lines = String(text ?? '').split('\n');
+  let w = 0;
+  lines.forEach(l => { w = Math.max(w, cv.measureText(l).width); });
+  return { w: Math.ceil(w), h: lines.length * K.lh, lines };
+}
+const foldRowText = n => `⋯ 블록 ${countBlocks(SLOTS[n.type].flatMap(s => n[s]))}개`;
+let M, L, T;
+function measure(n) {
+  let r;
+  if (n.type === 'process') {
+    const t = tsize(n.text);
+    r = { w: Math.max(K.minW, t.w + 2 * K.padX), h: t.h + 2 * K.padY };
+  } else if (n.type === 'range') {
+    if (folded.has(n.id)) { const t = tsize(foldLabel(n)); r = { w: t.w + 2 * K.padX + 20, h: t.h + 2 * K.padY + 4 }; }
+    else r = measureSeq(n.children);
+  } else {
+    const t = tsize(n.text);
+    const fr = folded.has(n.id) ? tsize(foldRowText(n)) : null;
+    if (n.type === 'if') {
+      const headH = t.h + 2 * K.padY + K.ifLab, headW = t.w + 2 * K.padX + 70;
+      if (fr) r = { w: Math.max(headW, fr.w + 2 * K.padX), h: headH + fr.h + 2 * K.padY, headH };
+      else {
+        const y = measureSeq(n.yes), no = measureSeq(n.no);
+        r = { w: Math.max(headW, y.w + no.w), h: headH + Math.max(y.h, no.h), headH, yw: y.w, nw: no.w };
+      }
+    } else {
+      const headH = t.h + 2 * K.padY;
+      const inner = fr ? { w: fr.w + 2 * K.padX, h: fr.h + 2 * K.padY } : measureSeq(n.body);
+      r = { w: Math.max(t.w + 2 * K.padX, K.strip + inner.w), h: headH + inner.h, headH };
+    }
+  }
+  M.set(n.id, r);
+  return r;
+}
+function measureSeq(list) {
+  let w = 0, h = 0;
+  list.forEach(c => { const m = measure(c); w = Math.max(w, m.w); h += m.h; });
+  return { w, h };
+}
+function placeSeq(list, x, y, w, h, out) {
+  let cy = y;
+  list.forEach((c, i) => {
+    const ch = i === list.length - 1 ? (y + h - cy) : M.get(c.id).h;
+    place(c, x, cy, w, ch, out);
+    cy += ch;
+  });
+}
+function place(n, x, y, w, h, out) {
+  const m = M.get(n.id);
+  L.set(n.id, { x, y, w, h });
+  const fd = folded.has(n.id);
+  if (n.type === 'process') {
+    out.items.push({ k: 'process', id: n.id, x, y, w, h, text: n.text });
+    T.set(n.id, { x, y, w, h: m.h });
+  } else if (n.type === 'range') {
+    if (fd) { out.items.push({ k: 'rangeFold', id: n.id, x, y, w, h, text: foldLabel(n), named: !!n.name }); T.set(n.id, { x, y, w, h: m.h }); }
+    else placeSeq(n.children, x, y, w, h, out);
+    if (n.highlight) out.regions.push({ x, y, w, h });
+    else if (!fd && opts.showRanges && 'name' in n) out.ghosts.push({ x, y, w, h, text: foldLabel(n) });
+  } else if (n.type === 'if') {
+    const hh = m.headH, by = y + hh, bh = h - hh;
+    let sx = x + w / 2;
+    if (!fd) {
+      const extra = w - (m.yw + m.nw);
+      const yW = Math.round(m.yw + extra * m.yw / (m.yw + m.nw));
+      sx = x + yW;
+      out.items.push({ k: 'ifHead', id: n.id, x, y, w, h: hh, sx, text: n.text });
+      placeSeq(n.yes, x, by, yW, bh, out);
+      placeSeq(n.no, x + yW, by, w - yW, bh, out);
+    } else {
+      out.items.push({ k: 'ifHead', id: n.id, x, y, w, h: hh, sx, text: n.text });
+      out.items.push({ k: 'foldRow', pid: n.id, x, y: by, w, h: bh, text: foldRowText(n) });
+    }
+    T.set(n.id, { x, y, w, h: hh });
+  } else {
+    const hh = m.headH, bottom = n.type === 'dowhile';
+    out.items.push({ k: 'loop', id: n.id, x, y, w, h, headH: hh, bottom, text: n.text });
+    const iy = bottom ? y : y + hh, ih = h - hh;
+    if (fd) out.items.push({ k: 'foldRow', pid: n.id, x: x + K.strip, y: iy, w: w - K.strip, h: ih, text: foldRowText(n) });
+    else placeSeq(n.body, x + K.strip, iy, w - K.strip, ih, out);
+    T.set(n.id, { x, y: bottom ? y + h - hh : y, w, h: hh });
+  }
+}
+function layout() {
+  M = new Map(); L = new Map(); T = new Map();
+  const out = { items: [], regions: [], ghosts: [] };
+  const bm = measureSeq(doc.body);
+  let W = Math.max(bm.w, 160), eh = 0;
+  const X = 24, Y = 24;
+  if (doc.event != null) {
+    const et = tsize(doc.event || ' ');
+    W = Math.max(W, et.w + 2 * K.padX + 24);
+    eh = K.hat + et.h + 2 * K.padY;
+    out.items.push({ k: 'event', id: 'event', x: X, y: Y, w: W, h: eh, text: doc.event });
+    L.set('event', { x: X, y: Y, w: W, h: eh });
+    T.set('event', { x: X, y: Y + K.hat, w: W, h: eh - K.hat });
+  }
+  placeSeq(doc.body, X, Y + eh, W, bm.h, out);
+  out.W = W + 2 * X; out.H = Y + eh + bm.h + 24;
+  return out;
+}
+
+/* ---------- 그리기 (기본 스타일 C, ADR-0013) ---------- */
+const COL = {
+  stroke: '#7e9ccf', process: '#edf0f5', if: '#f6ebdc', loop: '#dce6f6', event: '#e2efdf',
+  ink: '#151a22', label: '#1f45d6', kw: '#1f45d6', cm: '#2e8b2e', num: '#a1531b', str: '#a1531b',
+  muted: '#5a6476', fold: '#fbfcfe', region: '#d0821c', ghost: '#8a93a6', sel: '#2c55c9'
+};
+const KW = new Set(('if else while for do return break continue switch case default true false null NULL ' +
+  'int void char long short unsigned signed float double bool const static volatile struct sizeof ' +
+  'uint8_t uint16_t uint32_t int8_t int16_t int32_t and or not').split(' '));
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function tokens(line) {
+  if (!opts.syntax) return [[line, '']];
+  const re = /(\/\/.*$)|("(?:[^"\\]|\\.)*")|(\b(?:0x[0-9a-fA-F]+|\d+(?:\.\d+)?f?)\b)|([A-Za-z_]\w*)/g;
+  const out = [];
+  let last = 0, m;
+  while ((m = re.exec(line))) {
+    if (m.index > last) out.push([line.slice(last, m.index), '']);
+    out.push([m[0], m[1] ? 'cm' : m[2] ? 'str' : m[3] ? 'num' : KW.has(m[0]) ? 'kw' : '']);
+    last = m.index + m[0].length;
+  }
+  if (last < line.length) out.push([line.slice(last), '']);
+  return out;
+}
+function txt(text, x, y, anchor, extra = '') {
+  return String(text ?? '').split('\n').map((ln, i) =>
+    `<text x="${x}" y="${y + (i + 1) * K.lh - 5}"${anchor ? ` text-anchor="${anchor}"` : ''} font-family="${fam()}" font-size="13" fill="${COL.ink}" xml:space="preserve" style="white-space:pre" pointer-events="none"${extra}>` +
+    tokens(ln).map(([s, c]) => c ? `<tspan fill="${COL[c]}">${esc(s)}</tspan>` : esc(s)).join('') + `</text>`).join('');
+}
+const rect = (x, y, w, h, fill, attr = '') =>
+  `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${COL.stroke}" stroke-width="1" shape-rendering="crispEdges"${attr}/>`;
+function drawSVG(lay, ui) {
+  const s = [];
+  const da = id => ui ? ` data-id="${id}"` : '';
+  for (const it of lay.items) {
+    if (it.k === 'process') {
+      s.push(rect(it.x, it.y, it.w, it.h, COL.process, da(it.id)));
+      s.push(txt(it.text, it.x + K.padX, it.y + K.padY));
+    } else if (it.k === 'event') {
+      const { x, y, w, h } = it, bw = Math.min(110, w * 0.45), top = y + K.hat;
+      s.push(`<path d="M ${x} ${top} C ${x + 22} ${y - 2}, ${x + bw - 22} ${y - 2}, ${x + bw} ${top} L ${x + w} ${top} L ${x + w} ${y + h} L ${x} ${y + h} Z" fill="${COL.event}" stroke="${COL.stroke}" stroke-width="1"${da('event')}/>`);
+      s.push(txt(it.text, x + K.padX, top + K.padY));
+    } else if (it.k === 'loop') {
+      s.push(rect(it.x, it.y, it.w, it.h, COL.loop, da(it.id)));
+      s.push(txt(it.text, it.x + K.padX, (it.bottom ? it.y + it.h - it.headH : it.y) + K.padY));
+    } else if (it.k === 'ifHead') {
+      const { x, y, w, h, sx } = it, t = tsize(it.text);
+      s.push(rect(x, y, w, h, COL.if, da(it.id)));
+      s.push(`<path d="M ${x} ${y} L ${sx} ${y + h} L ${x + w} ${y}" fill="none" stroke="${COL.stroke}" stroke-width="1" pointer-events="none"/>`);
+      const cx = Math.min(Math.max(sx, x + t.w / 2 + K.padX), x + w - t.w / 2 - K.padX);
+      s.push(txt(it.text, cx, y + K.padY - 2, 'middle'));
+      s.push(`<text x="${x + 6}" y="${y + h - 5}" font-family="${FAM_SANS}" font-size="11" fill="${COL.label}" pointer-events="none">참</text>`);
+      s.push(`<text x="${x + w - 6}" y="${y + h - 5}" text-anchor="end" font-family="${FAM_SANS}" font-size="11" fill="${COL.label}" pointer-events="none">거짓</text>`);
+    } else if (it.k === 'foldRow') {
+      s.push(rect(it.x, it.y, it.w, it.h, COL.fold, ui ? ` data-id="${it.pid}" data-unfold="1"` : ''));
+      s.push(`<text x="${it.x + K.padX}" y="${it.y + K.padY + K.lh - 5}" font-family="${FAM_SANS}" font-size="12.5" font-style="italic" fill="${COL.muted}" pointer-events="none">${esc(it.text)}</text>`);
+    } else if (it.k === 'rangeFold') {
+      const { x, y, w, h } = it;
+      s.push(rect(x, y, w, h, COL.fold, da(it.id)));
+      s.push(`<line x1="${x + 4}" y1="${y + h - 3.5}" x2="${x + w - 4}" y2="${y + h - 3.5}" stroke="${COL.stroke}" stroke-width="1" pointer-events="none"/>`);
+      s.push(`<path d="M ${x + 8} ${y + K.padY + 4} l 6 4.5 l -6 4.5 z" fill="${COL.muted}" pointer-events="none"/>`);
+      s.push(txt(it.text, x + K.padX + 12, y + K.padY, null, it.named ? '' : ` font-style="italic"`));
+    }
+  }
+  // 강조 영역: 레이아웃이 끝난 뒤 굵은 테두리만 덧그린다 (ADR-0015). 안으로 들여 그려서 맞붙은 영역도 따로 보인다
+  for (const r of lay.regions)
+    s.push(`<rect x="${r.x + 3}" y="${r.y + 3}" width="${r.w - 6}" height="${r.h - 6}" fill="none" stroke="${COL.region}" stroke-width="3" rx="2" pointer-events="none"/>`);
+  if (ui) {
+    for (const g of lay.ghosts) {
+      s.push(`<rect x="${g.x + 2}" y="${g.y + 2}" width="${g.w - 4}" height="${g.h - 4}" fill="none" stroke="${COL.ghost}" stroke-width="1.2" stroke-dasharray="4 3" pointer-events="none"/>`);
+      s.push(`<text x="${g.x + g.w - 6}" y="${g.y + 13}" text-anchor="end" font-family="${FAM_SANS}" font-size="10.5" fill="${COL.ghost}" pointer-events="none">${esc(g.text)}</text>`);
+    }
+    const r = selRange();
+    if (r) {
+      const boxes = r.event ? [L.get('event')] : r.items.map(n => L.get(n.id));
+      if (boxes.every(Boolean)) {
+        const x1 = Math.min(...boxes.map(b => b.x)), y1 = Math.min(...boxes.map(b => b.y));
+        const x2 = Math.max(...boxes.map(b => b.x + b.w)), y2 = Math.max(...boxes.map(b => b.y + b.h));
+        s.push(`<rect x="${x1 + 1}" y="${y1 + 1}" width="${x2 - x1 - 2}" height="${y2 - y1 - 2}" fill="${COL.sel}" fill-opacity="0.10" stroke="${COL.sel}" stroke-width="2" pointer-events="none"/>`);
+      }
+    }
+  }
+  return s.join('\n');
+}
+function render() {
+  const lay = layout();
+  svg.setAttribute('viewBox', `0 0 ${lay.W} ${lay.H}`);
+  svg.setAttribute('width', lay.W * zoom);
+  svg.setAttribute('height', lay.H * zoom);
+  svg.innerHTML = drawSVG(lay, true);
+  $('#zoomOut').textContent = Math.round(zoom * 100) + '%';
+  $('#where').textContent = describeSel();
+}
+function describeSel() {
+  const r = selRange();
+  if (!r) return `블록 ${countBlocks(doc.body)}개`;
+  if (r.event) return '이벤트 머리';
+  const names = { process: '처리', if: 'If', while: 'While', dowhile: 'Do-While' };
+  if (r.items.length === 1) {
+    const n = r.items[0];
+    if (n.type === 'range') return (n.highlight ? '강조 영역' : '이름 붙은 범위') + (folded.has(n.id) ? ' (접힘)' : '');
+    return names[n.type] + (folded.has(n.id) ? ' (접힘)' : '');
+  }
+  return `${r.items.length}개 고름`;
+}
+
+/* ---------- 파일 (.ns.svg) ---------- */
+function modelJSON() {
+  return JSON.stringify({ format: 'nsdrawing', version: 0, event: doc.event, body: doc.body }, null, 2);
+}
+function exportSVG() {
+  const keep = folded;
+  folded = new Set();               // 저장되는 그림은 항상 모두 펼친 모양 (ADR-0016)
+  const lay = layout();
+  const body = drawSVG(lay, false);
+  folded = keep;
+  render();
+  const json = modelJSON().split(']]>').join(']]]]><![CDATA[>');   // ^fmt-escape
+  return `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="${lay.W}" height="${lay.H}" viewBox="0 0 ${lay.W} ${lay.H}">\n` +
+    `<metadata id="nsdrawing-model"><![CDATA[${json}]]></metadata>\n` +
+    `<rect x="0" y="0" width="${lay.W}" height="${lay.H}" fill="#ffffff"/>\n${body}\n</svg>\n`;
+}
+function importSVG(text) {
+  const d = new DOMParser().parseFromString(text, 'image/svg+xml');
+  const md = d.getElementById('nsdrawing-model') || d.querySelector('metadata');
+  if (!md) return say('모델이 없는 SVG라서 편집할 수 없습니다 (그림을 거꾸로 읽지 않습니다)', true);
+  let m;
+  try { m = JSON.parse(md.textContent); } catch (e) { return say('모델이 손상되어 열 수 없습니다', true); }
+  if (!m || !Array.isArray(m.body)) return say('NSDrawing 모델이 아닙니다', true);
+  pushUndo();
+  doc = { event: m.event ?? null, body: m.body };
+  fixUid(); folded = new Set(); selectOne(null);
+  normalize(); render(); save(); say('파일을 열었습니다. 접힘은 모두 펼쳐진 채로 열립니다');
+}
+async function download() {
+  const dl = window.claude?.use ? await window.claude.use('downloads').catch(() => null) : null;
+  if (dl) {
+    try { await dl.save({ filename: 'diagram.ns.svg', data: exportSVG() }); say('받았습니다'); }
+    catch (e) { say(e && e.code === 'declined' ? '받기를 그만뒀습니다' : '받기가 막혔습니다. "SVG 보기"에서 복사하세요', e && e.code !== 'declined'); }
+    return;
+  }
+  try {
+    const blob = new Blob([exportSVG()], { type: 'image/svg+xml' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'diagram.ns.svg';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    say('받기를 시작했습니다. 아무 일도 없으면 "SVG 보기"에서 복사하세요');
+  } catch (e) { say('받기가 막혔습니다. "SVG 보기"에서 복사하세요', true); }
+}
+
+/* ---------- 글자 고치기 ---------- */
+function currentText(id) {
+  if (id === 'event') return doc.event ?? '';
+  const n = idx.get(id)?.node;
+  if (!n) return '';
+  return n.type === 'range' ? foldLabel(n) : n.text;
+}
+function startEdit(id, o = {}) {
+  if (!id) return;
+  const n = id === 'event' ? null : idx.get(id)?.node;
+  if (n && n.type === 'range' && !folded.has(n.id)) return say('범위 이름은 접은 칸에서 고칩니다');
+  const box = T.get(id);
+  if (!box) return;
+  const orig = currentText(id);
+  editing = { id, orig, naming: !!o.naming, fresh: !!o.fresh };
+  editor.value = orig;
+  editor.style.left = (box.x * zoom) + 'px';
+  editor.style.top = (box.y * zoom) + 'px';
+  editor.style.width = Math.max(box.w * zoom, 140) + 'px';
+  editor.style.fontFamily = fam();
+  editor.style.fontSize = (13 * zoom) + 'px';
+  editor.style.lineHeight = (K.lh * zoom) + 'px';
+  editor.style.padding = `${(K.padY - 2) * zoom}px ${(K.padX - 2) * zoom}px`;
+  editor.dataset.minh = box.h * zoom;
+  editor.hidden = false;
+  growEditor();
+  editor.focus();
+  editor.select();
+  if (o.naming) say('접은 범위의 이름을 적으세요. Enter나 Esc는 기본 이름 그대로 둡니다');
+}
+function growEditor() {
+  const lines = editor.value.split('\n').length;
+  editor.style.height = Math.max(+editor.dataset.minh, (lines * K.lh + 2 * K.padY) * zoom) + 'px';
+}
+function setText(id, v) {
+  if (id === 'event') { doc.event = v; return; }
+  const n = idx.get(id)?.node;
+  if (!n) return;
+  if (n.type === 'range') n.name = v.trim() === '' ? null : v;
+  else n.text = v;
+}
+function commitEdit(cancel) {
+  const e = editing;
+  if (!e) return;
+  editing = null;
+  editor.hidden = true;
+  const v = editor.value;
+  if (e.naming) {
+    // 처음 접을 때: 치지 않고 Enter·Esc → 기본 이름. 이름을 물어봤다는 표시로 name 키는 남는다
+    const g = idx.get(e.id)?.node;
+    if (g) g.name = (cancel || v === e.orig || v.trim() === '') ? null : v;
+    say(g && g.name ? `"${g.name}"(으)로 접었습니다` : '기본 이름으로 접었습니다');
+  } else if (!cancel && v !== e.orig) {
+    if (!e.fresh) pushUndo();
+    setText(e.id, v);
+  }
+  normalize(); render(); save();
+  stage.focus({ preventScroll: true });
+}
+editor.addEventListener('input', growEditor);
+editor.addEventListener('keydown', ev => {
+  ev.stopPropagation();
+  if (ev.isComposing || ev.keyCode === 229) return;
+  if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); commitEdit(false); }
+  else if (ev.key === 'Escape') { ev.preventDefault(); commitEdit(true); }
+});
+editor.addEventListener('blur', () => commitEdit(false));
+
+/* ---------- 명령 ---------- */
+const needSel = () => { const r = selRange(); if (!r) say('먼저 블록을 고르세요'); return r; };
+function insert(kind, pos) {
+  const r = selRange();
+  if (r && r.event && pos === 'before') return say('이벤트 머리 앞에는 넣을 수 없습니다');
+  if (r && !r.event && pos === 'inside') {
+    const t = r.items.length === 1 ? r.items[0] : null;
+    if (!t || !(isCtrl(t) || t.type === 'range')) return say('안쪽에 넣으려면 제어 블록이나 범위 하나를 고르세요');
+  }
+  const node = mk(kind);
+  apply(() => {
+    if (!r || r.event) { doc.body.splice(r ? 0 : doc.body.length, 0, node); return; }
+    if (pos === 'after') r.list.splice(r.hi + 1, 0, node);
+    else if (pos === 'before') r.list.splice(r.lo, 0, node);
+    else {
+      const t = r.items[0];
+      const list = t.type === 'range' ? t.children : t[SLOTS[t.type][0]];
+      folded.delete(t.id);
+      if (list.length === 1 && list[0].type === 'process' && !list[0].text) list.splice(0, 1, node);
+      else list.unshift(node);
+    }
+  });
+  selectOne(node.id); render();
+  startEdit(node.id, { fresh: true });
+}
+function del() {
+  const r = needSel();
+  if (!r) return;
+  if (r.event) { apply(() => { doc.event = null; }); selectOne(null); render(); return say('이벤트 머리를 뗐습니다'); }
+  const list = r.list, lo = r.lo, parent = r.parent;
+  const next = list[r.hi + 1] || list[lo - 1];
+  apply(() => { list.splice(lo, r.hi - lo + 1); });
+  if (next && idx.has(next.id)) selectOne(next.id);
+  else if (list.length && idx.has(list[Math.min(lo, list.length - 1)].id)) selectOne(list[Math.min(lo, list.length - 1)].id);
+  else selectOne(parent && idx.has(parent.id) ? parent.id : null);
+  render();
+}
+function wrap(kind) {
+  const r = needSel();
+  if (!r) return;
+  if (r.event) return say('이벤트 머리는 감쌀 수 없습니다');
+  const node = mk(kind);
+  apply(() => {
+    const items = r.list.splice(r.lo, r.hi - r.lo + 1);
+    if (kind === 'if') node.yes = items; else node.body = items;
+    r.list.splice(r.lo, 0, node);
+  });
+  selectOne(node.id); render();
+  startEdit(node.id, { fresh: true });
+}
+const emptyBranch = b => b.every(n => n.type === 'process' && !n.text.trim());
+function unwrap() {
+  const r = needSel();
+  if (!r) return;
+  if (r.event || r.items.length !== 1) return say('풀 제어 블록 하나를 고르세요');
+  const t = r.items[0];
+  if (t.type === 'process') return say('처리 블록은 풀 수 없습니다');
+  let content;
+  apply(() => {
+    if (t.type === 'if') content = [t.yes, t.no].filter(b => !emptyBranch(b)).flat();   // 내용 있는 갈래만 이어 붙임
+    else if (t.type === 'range') content = t.children;
+    else content = emptyBranch(t.body) ? [] : t.body;
+    r.list.splice(r.lo, 1, ...content);
+    folded.delete(t.id);
+  });
+  if (content.length) sel = { root: content[0].id, anchor: content[0].id, focus: content[content.length - 1].id };
+  render();
+  say(t.type === 'range' ? '범위를 풀었습니다. 이름과 강조도 함께 사라졌습니다' : '풀었습니다. 안의 블록은 그 자리에 남았습니다');
+}
+function foldRange(g, fresh) {
+  const ask = !('name' in g);
+  if (ask && !fresh) pushUndo();
+  folded.add(g.id); saveFold(); render();
+  if (ask) startEdit(g.id, { naming: true, fresh: true });
+}
+function fold() {
+  const r = needSel();
+  if (!r) return;
+  if (r.event) return say('이벤트 머리는 접을 수 없습니다');
+  if (r.items.length === 1) {
+    const t = r.items[0];
+    if (folded.has(t.id)) { folded.delete(t.id); saveFold(); render(); return say('폈습니다'); }
+    if (isCtrl(t)) { folded.add(t.id); saveFold(); render(); return say('접었습니다. 머리만 남습니다'); }
+    if (t.type === 'range') return foldRange(t, false);
+  }
+  if (r.parent && r.parent.type === 'range' && r.lo === 0 && r.hi === r.list.length - 1) {
+    const g = r.parent; selectOne(g.id); return foldRange(g, false);
+  }
+  const g = { id: nid(), type: 'range', highlight: false, children: [] };
+  apply(() => { g.children = r.list.splice(r.lo, r.hi - r.lo + 1); r.list.splice(r.lo, 0, g); });
+  selectOne(g.id);
+  foldRange(g, true);
+}
+function hasHLInside(n) {
+  return (SLOTS[n.type] || []).some(s => n[s].some(c => isHL(c) || hasHLInside(c)));
+}
+function region() {
+  const r = needSel();
+  if (!r) return;
+  if (r.event) return say('이벤트 머리는 강조할 수 없습니다');
+  for (let p = r.parent; p; p = idx.get(p.id)?.parent)
+    if (isHL(p)) return say('강조 영역 안에는 강조 영역을 만들 수 없습니다', true);
+  if (r.items.length === 1 && isHL(r.items[0])) return say('이미 강조 영역입니다. 지우려면 Shift+H');
+  if (r.items.some(it => !isHL(it) && hasHLInside(it)))
+    return say('안쪽 깊은 곳에 강조 영역이 있어 만들 수 없습니다 (질문 3)', true);
+  const hs = r.items.filter(isHL);
+  let g;
+  apply(() => {
+    const items = r.list.splice(r.lo, r.hi - r.lo + 1);
+    if (!hs.length) {
+      if (items.length === 1 && items[0].type === 'range') { g = items[0]; g.highlight = true; }
+      else g = { id: nid(), type: 'range', highlight: true, children: items };
+    } else {
+      g = hs[0];   // 합칠 때는 맨 앞 영역의 이름을 쓴다
+      g.children = items.flatMap(it => isHL(it) ? it.children : [it]);
+      hs.forEach(h => folded.delete(h.id));
+    }
+    r.list.splice(r.lo, 0, g);
+  });
+  selectOne(g.id); render();
+  say(hs.length > 1 ? `강조 영역 ${hs.length}개를 하나로 합쳤습니다` : hs.length ? '기존 강조 영역을 넓혔습니다' : '강조 영역을 만들었습니다');
+}
+function unregion() {
+  const r = needSel();
+  if (!r || r.event) return;
+  let g = r.items.length === 1 && isHL(r.items[0]) ? r.items[0] : null;
+  for (let p = r.parent; !g && p; p = idx.get(p.id)?.parent) if (isHL(p)) g = p;
+  if (!g) { const hs = r.items.filter(isHL); if (hs.length === 1) g = hs[0]; }
+  if (!g) return say('고른 곳에 강조 영역이 없습니다');
+  const kids = g.children, named = 'name' in g;
+  apply(() => {
+    if (named) g.highlight = false;
+    else { const e = idx.get(g.id); e.list.splice(e.index, 1, ...g.children); folded.delete(g.id); }
+  });
+  if (!named) sel = { root: kids[0].id, anchor: kids[0].id, focus: kids[kids.length - 1].id };
+  render();
+  say(named ? '강조를 지웠습니다. 이름 붙은 범위는 남았습니다' : '강조를 지웠습니다. 블록은 그대로입니다');
+}
+function toggleEvent() {
+  const on = doc.event == null;
+  apply(() => { doc.event = on ? '' : null; });
+  if (on) { selectOne('event'); render(); startEdit('event', { fresh: true }); }
+  else { if (sel && sel.anchor === 'event') selectOne(null); render(); say('이벤트 머리를 뗐습니다'); }
+}
+function setZoom(z) { zoom = Math.min(3, Math.max(0.4, Math.round(z * 10) / 10)); render(); }
+function cyclePos() {
+  const p = $('#pos'), order = ['after', 'before', 'inside'];
+  p.value = order[(order.indexOf(p.value) + 1) % 3];
+  say('넣을 위치: ' + p.options[p.selectedIndex].text);
+}
+
+/* ---------- 예제 ---------- */
+function build(spec) {
+  // 짧은 표기로 예제를 만든다: 문자열 = 처리, [type, text, ...]
+  const b = s => {
+    if (typeof s === 'string') return P(s);
+    const [type, a, x, y] = s;
+    if (type === 'if') return { id: nid(), type, text: a, yes: x.map(b), no: y.map(b) };
+    if (type === 'range') return { id: nid(), type, highlight: !!y, ...(a !== undefined ? { name: a } : {}), children: x.map(b) };
+    return { id: nid(), type, text: a, body: x.map(b) };
+  };
+  return spec.map(b);
+}
+function loadExample(kind) {
+  uid = 1;
+  const code = kind === 'code';
+  const body = code ? build([
+    'tick++;',
+    ['if', 'btn_read(BTN1) == PRESSED',
+      ['debounce_cnt++;',
+        ['if', 'debounce_cnt >= 20', ['led_toggle(LED1);  // 누름 확정', 'debounce_cnt = 0;'], ['']]],
+      ['debounce_cnt = 0;']],
+    ['range', '센서 읽기', ['adc_start(CH0);', ['while', '!adc_done()', ['wait_us(10);']], 'temp = adc_value() * 0.1f;'], true],
+    ['range', '로그 남기기', ['log_buf[log_i] = temp;', 'log_i = (log_i + 1) % LOG_SIZE;'], true],
+    ['dowhile', 'uart_busy()', ['uart_flush();']],
+    'return;'
+  ]) : build([
+    '틱 수를 하나 늘린다',
+    ['if', '버튼이 눌렸는가?',
+      ['눌린 시간을 센다',
+        ['if', '20ms 넘게 눌렸는가?', ['LED를 켜거나 끈다\n(누름이 확정됨)', '눌린 시간을 0으로 되돌린다'], ['']]],
+      ['눌린 시간을 0으로 되돌린다']],
+    ['range', '센서 읽기', ['온도 센서 변환을 시작한다', ['while', '변환이 끝날 때까지', ['10µs 기다린다']], '온도 값을 읽는다'], true],
+    ['range', '로그 남기기', ['온도를 로그에 적는다', '로그 위치를 다음 칸으로 옮긴다'], true],
+    ['dowhile', 'UART가 바쁜 동안', ['UART 버퍼를 비운다']],
+    '끝낸다'
+  ]);
+  if (undoStack.length || countBlocks(doc.body) > 1) pushUndo();
+  doc = { event: code ? 'TIM2 인터럽트 (1ms)' : '타이머가 1ms마다 울리면', body };
+  normalize();
+  folded = new Set([body[3].id]);
+  opts.mono = code; $('#optMono').checked = code;
+  selectOne(null); render(); save(); saveFold();
+  say(code ? '코드식 예제: C 코드를 그대로 적은 모양' : '문장식 예제: 같은 로직을 한국어 문장으로 적은 모양');
+}
+
+/* ---------- 저장 (이 브라우저에만) ---------- */
+function save() { try { localStorage.setItem('nsd-proto-doc', JSON.stringify({ doc, opts })); } catch (e) {} }
+function saveFold() { try { localStorage.setItem('nsd-proto-fold', JSON.stringify([...folded])); } catch (e) {} }
+function restore() {
+  try {
+    const s = JSON.parse(localStorage.getItem('nsd-proto-doc') || 'null');
+    if (!s || !s.doc || !Array.isArray(s.doc.body)) return false;
+    doc = s.doc; Object.assign(opts, s.opts || {});
+    folded = new Set(JSON.parse(localStorage.getItem('nsd-proto-fold') || '[]'));
+    fixUid(); normalize();
+    $('#optSyntax').checked = opts.syntax; $('#optMono').checked = opts.mono; $('#optRanges').checked = opts.showRanges;
+    return true;
+  } catch (e) { return false; }
+}
+
+/* ---------- 상태 줄 ---------- */
+let sayTimer;
+function say(text, warn) {
+  const m = $('#msg');
+  m.textContent = text;
+  m.classList.add('flash');
+  m.style.color = warn ? 'var(--warn)' : '';
+  clearTimeout(sayTimer);
+  sayTimer = setTimeout(() => m.classList.remove('flash'), 1600);
+}
+
+/* ---------- 입력 ---------- */
+const COMMANDS = {
+  new: () => { pushUndo(); doc = { event: null, body: [P()] }; folded = new Set(); normalize(); selectOne(doc.body[0].id); render(); save(); say('새 다이어그램'); },
+  open: () => $('#file').click(),
+  svg: () => { $('#svgText').value = exportSVG(); $('#modal').hidden = false; $('#svgText').focus(); },
+  download, exCode: () => loadExample('code'), exText: () => loadExample('text'),
+  event: toggleEvent, unwrap, fold, region, unregion, undo, redo, del,
+  zoomIn: () => setZoom(zoom + 0.1), zoomOut: () => setZoom(zoom - 0.1),
+  closeModal: () => { $('#modal').hidden = true; stage.focus({ preventScroll: true }); },
+  copySvg: () => {
+    const ta = $('#svgText');
+    navigator.clipboard?.writeText(ta.value).then(() => say('복사했습니다'), () => { ta.select(); say('선택해 두었습니다. Ctrl+C로 복사하세요'); })
+      ?? (ta.select(), say('선택해 두었습니다. Ctrl+C로 복사하세요'));
+  },
+  edit: () => { const r = needSel(); if (r) startEdit(r.event ? 'event' : sel.focus); }
+};
+function run(cmd) {
+  hideMenu();
+  if (editing) commitEdit(false);
+  const [name, arg] = cmd.split(':');
+  if (name === 'ins') insert(arg, $('#pos').value);
+  else if (name === 'wrap') wrap(arg);
+  else COMMANDS[name]?.();
+}
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('button[data-cmd]');
+  if (!b) { if (!ev.target.closest('.menu')) hideMenu(); return; }
+  run(b.dataset.cmd);
+  if (!b.closest('.modal') && !editing && $('#modal').hidden) stage.focus({ preventScroll: true });
+});
+$('#file').addEventListener('change', ev => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  f.text().then(importSVG);
+  ev.target.value = '';
+});
+$('#optSyntax').addEventListener('change', e => { opts.syntax = e.target.checked; render(); save(); });
+$('#optMono').addEventListener('change', e => { opts.mono = e.target.checked; render(); save(); });
+$('#optRanges').addEventListener('change', e => { opts.showRanges = e.target.checked; render(); save(); });
+
+svg.addEventListener('mousedown', ev => {
+  if (ev.button !== 0) return;
+  if (editing) commitEdit(false);
+  const t = ev.target.closest('[data-id]');
+  if (!t) { selectOne(null); render(); return; }
+  if (ev.shiftKey) selectTo(t.dataset.id); else selectOne(t.dataset.id);
+  render();
+  stage.focus({ preventScroll: true });
+  ev.preventDefault();
+});
+svg.addEventListener('dblclick', ev => {
+  const t = ev.target.closest('[data-id]');
+  if (!t) return;
+  if (t.dataset.unfold) { folded.delete(t.dataset.id); saveFold(); selectOne(t.dataset.id); render(); return say('폈습니다'); }
+  selectOne(t.dataset.id); render(); startEdit(t.dataset.id);
+});
+svg.addEventListener('contextmenu', ev => {
+  const t = ev.target.closest('[data-id]');
+  if (!t) return;
+  ev.preventDefault();
+  const r = selRange();
+  const inSel = r && (r.event ? t.dataset.id === 'event' : r.items.some(n => n.id === t.dataset.id));
+  if (!inSel) { selectOne(t.dataset.id); render(); }
+  showMenu(ev.clientX, ev.clientY);
+});
+function showMenu(x, y) {
+  const it = (cmd, label, key) => `<button data-cmd="${cmd}">${label}<span>${key || ''}</span></button>`;
+  const r = selRange();
+  menu.innerHTML = r && r.event
+    ? it('edit', '글자 고치기', 'Enter') + it('ins:process', '본문 맨 앞에 처리 넣기', 'P') + '<hr>' + it('event', '이벤트 머리 떼기', 'E')
+    : it('edit', '글자 고치기', 'Enter') + '<hr>' +
+      it('ins:process', '처리 넣기', 'P') + it('ins:if', 'If 넣기', 'I') + it('ins:while', 'While 넣기', 'W') + it('ins:dowhile', 'Do-While 넣기', 'D') + '<hr>' +
+      it('wrap:while', 'While로 감싸기', 'S W') + it('wrap:dowhile', 'Do-While로 감싸기', 'S D') + it('wrap:if', 'If로 감싸기', 'S I') + it('unwrap', '풀기', 'U') + '<hr>' +
+      it('fold', '접기 · 펴기', 'F') + it('region', '강조', 'H') + it('unregion', '강조 지우기', '⇧H') + '<hr>' +
+      it('del', '지우기', 'Del');
+  menu.hidden = false;
+  const mw = menu.offsetWidth, mh = menu.offsetHeight;
+  menu.style.left = Math.min(x, innerWidth - mw - 8) + 'px';
+  menu.style.top = Math.min(y, innerHeight - mh - 8) + 'px';
+}
+function hideMenu() { menu.hidden = true; }
+stage.addEventListener('wheel', ev => {
+  if (!ev.ctrlKey) return;
+  ev.preventDefault();
+  setZoom(zoom * (ev.deltaY < 0 ? 1.1 : 0.9));
+}, { passive: false });
+
+document.addEventListener('keydown', ev => {
+  if (editing) return;
+  const tag = ev.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  if (!$('#modal').hidden) { if (ev.key === 'Escape') run('closeModal'); return; }
+  if (tag === 'BUTTON' && (ev.key === 'Enter' || ev.key === ' ')) return;
+  const code = ev.code, ctrl = ev.ctrlKey || ev.metaKey;
+  let handled = true;
+  if (chord === 'S') {
+    chord = null;
+    const k = { KeyW: 'while', KeyD: 'dowhile', KeyI: 'if' }[code];
+    if (k) wrap(k); else say('감싸기를 그만뒀습니다');
+    ev.preventDefault();
+    return;
+  }
+  if (ctrl) {
+    if (code === 'KeyZ' && !ev.shiftKey) undo();
+    else if (code === 'KeyY' || (code === 'KeyZ' && ev.shiftKey)) redo();
+    else handled = false;
+  } else if (ev.altKey) handled = false;
+  else if (code.startsWith('Arrow')) move(code, ev.shiftKey);
+  else if (code === 'Enter' || code === 'NumpadEnter' || code === 'F2') run('edit');
+  else if (code === 'Delete' || code === 'Backspace') del();
+  else if (code === 'Escape') { hideMenu(); selectOne(null); render(); }
+  else if (code === 'KeyP' || code === 'KeyI' || code === 'KeyW' || code === 'KeyD') {
+    const kind = { KeyP: 'process', KeyI: 'if', KeyW: 'while', KeyD: 'dowhile' }[code];
+    insert(kind, ev.shiftKey ? 'before' : $('#pos').value);
+  }
+  else if (code === 'KeyO') cyclePos();
+  else if (code === 'KeyE') toggleEvent();
+  else if (code === 'KeyS') { chord = 'S'; say('감싸기: W = While, D = Do-While, I = If'); }
+  else if (code === 'KeyU') unwrap();
+  else if (code === 'KeyF') fold();
+  else if (code === 'KeyH') ev.shiftKey ? unregion() : region();
+  else handled = false;
+  if (handled) ev.preventDefault();
+});
+
+/* ---------- 시작 ---------- */
+if (!restore()) loadExample('code');
+else { render(); say('지난번 상태를 되살렸습니다. 처음 예제는 "코드식"을 누르세요'); }
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => render());
+stage.focus({ preventScroll: true });
+})();
+</script>
