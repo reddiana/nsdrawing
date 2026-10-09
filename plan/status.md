@@ -63,6 +63,7 @@ updated: 2026-10-10
 - [x] 요구사항 리뷰용 프로토타입 만들기 → 됨 (2026-10-10, [[2026-10-10-02-prototype]])
 - [ ] **다음 세션:** 프로토타입을 써 본 결과로 요구사항 점검. 프로토타입의 질문 10개에 답하고, 새 요구사항을 모은다. 답에 따라 프로토타입을 고친다
 	- [ ] 프로토타입에 드래그로 옮기기(블록 하나, 선택한 블록들) 넣기 → [[01-requirements#^edit-dnd]]
+	- [ ] 프로토타입 화면 글자의 "이름 붙은 범위"를 "이름 붙은 영역"으로 바꾸기
 - [ ] 웹 베타를 출시할 때: 저장소 맨 위 `README.md`에 Buy Me a Coffee 후원 버튼 링크를 단다 → [[01-requirements#^all-donate]]
 - [ ] 나중에 검토: 유료 버전. Confluence는 요구사항에 #P2로 올림([[01-requirements#2.5 Confluence (유료, 나중에)]]). 다른 후보: Jira(같은 Forge로 묶음), Google Workspace Marketplace
 
