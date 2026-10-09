@@ -1,0 +1,2 @@
+# 모든 텍스트 파일을 LF로 저장한다 (Obsidian과 Claude Code가 LF로 쓴다)
+* text=auto eol=lf

@@ -12,32 +12,32 @@ updated: 2026-10-07
 
 ## NS 차트 개념
 
-| 용어 | 영어 | 코드 이름(안) | 뜻 |
-| --- | --- | --- | --- |
-| NS 차트 | Nassi-Shneiderman diagram | `Diagram` | 구조적 프로그래밍을 상자 안의 상자로 나타낸 도표 |
-| 블록 | block | `Block` | 차트를 이루는 사각형 하나. 트리의 노드 |
-| 시퀀스 | sequence | `Sequence` | 위에서 아래로 차례로 실행되는 블록 목록 |
-| 처리 블록 | process | `ProcessBlock` | 한 단계의 명령 |
-| 제어 블록 | control block | — | 다른 블록을 안에 품는 블록 (선택, 반복 등) |
-| 선택 블록 | if-then-else | `IfBlock` | 조건에 따라 참/거짓 갈래 중 하나를 실행 |
-| 다중 선택 블록 | switch/case | `CaseBlock` | 값에 따라 여러 갈래 중 하나를 실행 |
-| 전위 판정 반복 | while (pre-test loop) | `WhileBlock` | 조건을 먼저 검사하는 반복 |
-| 후위 판정 반복 | do-while / repeat-until (post-test loop) | `DoWhileBlock` | 본문을 먼저 실행하고 조건을 검사하는 반복 |
-| 횟수 반복 | for | `ForBlock` | 정해진 횟수만큼 반복 |
-| 서브루틴 호출 | call | `CallBlock` | 다른 절차를 부르는 블록 |
-| 갈래 | branch | `Branch` | 선택 블록 안의 각 경로. 하나의 시퀀스를 가짐 |
-| 본문 | body | `body` | 반복 블록 안에서 반복되는 시퀀스 |
-| 조건 | condition | `condition` | 선택·반복 블록의 판정 텍스트 |
+| 용어       | 영어                                       | 코드 이름(안)       | 뜻                           |
+| -------- | ---------------------------------------- | -------------- | --------------------------- |
+| NS 차트    | Nassi-Shneiderman diagram                | `Diagram`      | 구조적 프로그래밍을 상자 안의 상자로 나타낸 도표 |
+| 블록       | block                                    | `Block`        | 차트를 이루는 사각형 하나. 트리의 노드      |
+| 시퀀스      | sequence                                 | `Sequence`     | 위에서 아래로 차례로 실행되는 블록 목록      |
+| 처리 블록    | process                                  | `ProcessBlock` | 한 단계의 명령                    |
+| 제어 블록    | control block                            | —              | 다른 블록을 안에 품는 블록 (선택, 반복 등)  |
+| 선택 블록    | if-then-else                             | `IfBlock`      | 조건에 따라 참/거짓 갈래 중 하나를 실행     |
+| 다중 선택 블록 | switch/case                              | `CaseBlock`    | 값에 따라 여러 갈래 중 하나를 실행        |
+| 전위 판정 반복 | while (pre-test loop)                    | `WhileBlock`   | 조건을 먼저 검사하는 반복              |
+| 후위 판정 반복 | do-while / repeat-until (post-test loop) | `DoWhileBlock` | 본문을 먼저 실행하고 조건을 검사하는 반복     |
+| 횟수 반복    | for                                      | `ForBlock`     | 정해진 횟수만큼 반복                 |
+| 서브루틴 호출  | call                                     | `CallBlock`    | 다른 절차를 부르는 블록               |
+| 갈래       | branch                                   | `Branch`       | 선택 블록 안의 각 경로. 하나의 시퀀스를 가짐  |
+| 본문       | body                                     | `body`         | 반복 블록 안에서 반복되는 시퀀스          |
+| 조건       | condition                                | `condition`    | 선택·반복 블록의 판정 텍스트            |
 
 ## 편집 개념
 
-| 용어 | 영어 | 뜻 |
-| --- | --- | --- |
-| 선택 범위 | selection range | 같은 부모 아래 연속된 블록들. [[0008-contiguous-selection\|ADR-0008]] |
-| 자동 확장 | selection expansion | 다른 깊이의 블록을 Shift+클릭하면 공통 범위로 선택을 넓히는 동작 |
-| 감싸기 | wrap (surround with) | 선택 범위를 새 제어 블록 안에 넣는 편집 |
-| 풀기 | unwrap | 제어 블록만 지우고 안의 블록을 그 자리에 남기는 편집 |
-| 편집 명령 | command | 모델을 바꾸는 단위 작업. Undo 단위와 같음 |
+| 용어    | 영어                   | 뜻                                                         |
+| ----- | -------------------- | --------------------------------------------------------- |
+| 선택 범위 | selection range      | 같은 부모 아래 연속된 블록들. [[0008-contiguous-selection\|ADR-0008]] |
+| 자동 확장 | selection expansion  | 다른 깊이의 블록을 Shift+클릭하면 공통 범위로 선택을 넓히는 동작                   |
+| 감싸기   | wrap (surround with) | 선택 범위를 새 제어 블록 안에 넣는 편집                                   |
+| 풀기    | unwrap               | 제어 블록만 지우고 안의 블록을 그 자리에 남기는 편집                            |
+| 편집 명령 | command              | 모델을 바꾸는 단위 작업. Undo 단위와 같음                                |
 
 ## 구조 · 파일 개념
 
