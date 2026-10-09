@@ -4,12 +4,17 @@ aliases:
   - NSDrawing
 tags:
   - nsdrawing
-updated: 2026-10-09
+updated: 2026-10-10
 ---
 
 # NSDrawing 문서
 
 NS 차트(Nassi-Shneiderman Diagram)를 그리는 프로그램입니다. Obsidian 플러그인, 데스크톱 앱, 웹(정적 페이지)으로 배포합니다.
+
+> [!NOTE]
+> 이 저장소의 문서는 [Obsidian](https://obsidian.md/)으로 쓰고 읽도록 만들었습니다. `[[위키링크]]`, 블록 ID(`^edit-wrap`), 태그, 콜아웃을 쓰기 때문에 GitHub에서는 문서 사이의 링크가 동작하지 않고 일부가 글자 그대로 보입니다.
+>
+> **Obsidian으로 보는 법:** 저장소를 내려받은 뒤(`git clone` 또는 Code → Download ZIP), Obsidian에서 **Open folder as vault**로 저장소 폴더를 엽니다. 이 파일(`docs/README.md`)에서 시작하세요.
 
 ## 문서 지도
 
