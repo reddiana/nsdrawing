@@ -103,7 +103,7 @@ date: 2026-10-10
 | Drive에서 만드는 파일은 `.ns.svg` | [[0014-drive-file-extension\|ADR-0014]] |
 | `.obsidian/`은 git에서 제외 | `.gitignore` |
 | 문서 링크는 위키링크 그대로 둠. 대신 `docs/README.md` 맨 위에 "Obsidian으로 보라"는 안내를 넣음 (GitHub에서도 보이는 `> [!NOTE]` 형식) | [[docs/README\|문서 색인]] |
-| 저장소 맨 위 `README.md`를 만듦: 소개, 설계 단계 안내, Obsidian으로 보는 법, 폴더 안내 | `README.md`, CLAUDE.md "저장소 구성" |
+| 저장소 맨 위 `README.md`를 만듦: 소개, 설계 단계 안내, Obsidian으로 보는 법, 폴더 안내. 중복이라 `docs/README.md`의 안내는 뺌 | `README.md`, CLAUDE.md "저장소 구성" |
 | 처리를 마친 inbox 항목 삭제. 남은 항목: 수익 창출 버전, 웹 버전 참고 모델, Scratch의 장점 도입, 강조하기 | [[#inbox 원문 (지운 항목)]] |
 | 제안 5 호칭은 공식 용어 **메인테이너**. 후보(메인테이너, 프로덕트 오너, 프로젝트 오너) 중 선택. `plan/` · `journal/` · `tech-notes/` · CLAUDE.md의 "사용자"를 바꿈. 일반 사용자를 뜻하는 곳과 이 논의 본문은 그대로 둠 | CLAUDE.md "문서 작성 규칙" |
 

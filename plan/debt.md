@@ -28,7 +28,7 @@ updated: 2026-10-10
 
 ## 처리함
 
-- [x] `docs/README.md`의 위키링크: 바꾸지 않고, Obsidian으로 보라는 안내를 맨 위에 넣음 (2026-10-10)
+- [x] `docs/README.md`의 위키링크: 바꾸지 않고, Obsidian으로 보라는 안내는 저장소 맨 위 `README.md`에 둠 (2026-10-10)
 - [x] Drive 확장자: `.ns.svg` (2026-10-10) → [[0014-drive-file-extension|ADR-0014]]
 - [x] `.obsidian/`은 git에서 제외 (2026-10-10) → `.gitignore`
 - [x] inbox에서 처리를 마친 항목 삭제 (2026-10-10) → 원문은 [[2026-10-10-solo-housekeeping#inbox 원문 (지운 항목)]]
