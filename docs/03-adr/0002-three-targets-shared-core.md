@@ -51,3 +51,9 @@ apps/web          웹 셸
 - 좋아지는 점: 기능 추가가 세 대상에 동시에 반영된다. `core`를 화면 없이 테스트할 수 있다.
 - 감수하는 점: 세 환경 모두에서 돌아가는 웹 기술로 제한된다. → [[0003-typescript|ADR-0003]]
 - 후속 작업: 모노레포 도구(pnpm workspaces 등) 선택, 개발 순서 결정 → [[0011-development-order|ADR-0011]]
+
+## 이후 변경
+
+- 2026-10-09: Google Drive 연동을 웹 버전 위에 얹기로 했다 → [[0012-google-drive-integration|ADR-0012]]
+- 2026-10-10: 나중에 검토할 배포 대상으로 Confluence(유료)와 Claude skill이 요구사항에 들어갔다 → [[01-requirements#2. 배포 대상]]
+- 2026-10-10: 개발 순서를 웹 → Obsidian → 데스크톱으로 정했다 → [[0011-development-order|ADR-0011]]
