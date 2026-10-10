@@ -44,3 +44,7 @@ superseded-by:
 
 - 좋아지는 점: 확장자 충돌 없음, 대상 간 이동이 쉬움
 - 감수하는 점: Obsidian에서 `.svg` 파일 열기 동작을 가로채는 방법을 검증해야 함 → [[02-architecture#7. 위험과 검증이 필요한 사항]]
+
+## 이후 변경
+
+- 2026-10-10: Google Drive에서 만드는 파일의 확장자를 `.ns.svg`로 정했다 → [[0014-drive-file-extension|ADR-0014]]
