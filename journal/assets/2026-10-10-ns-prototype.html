@@ -111,16 +111,11 @@ kbd { font-family: var(--mono); font-size: 11.5px; border: 1px solid var(--line)
       <button data-cmd="exText">문장식</button>
     </div>
     <div class="grp">
-      <span class="lbl">넣기</span>
-      <select id="pos" title="넣을 위치 (O 키로 바꾸기)">
-        <option value="after">뒤에</option>
-        <option value="before">앞에</option>
-        <option value="inside">안쪽에</option>
-      </select>
-      <button data-cmd="ins:process">처리</button>
-      <button data-cmd="ins:if">If</button>
-      <button data-cmd="ins:while">While</button>
-      <button data-cmd="ins:dowhile">Do-While</button>
+      <span class="lbl" title="고른 블록 뒤에 넣습니다. Shift를 누른 채 누르면 앞에 넣습니다">뒤에 넣기</span>
+      <button data-cmd="ins:process" title="P (앞에: Shift+P)">처리</button>
+      <button data-cmd="ins:if" title="I (앞에: Shift+I)">If</button>
+      <button data-cmd="ins:while" title="W (앞에: Shift+W)">While</button>
+      <button data-cmd="ins:dowhile" title="D (앞에: Shift+D)">Do-While</button>
       <button data-cmd="event">이벤트 머리</button>
     </div>
     <div class="grp">
@@ -141,6 +136,11 @@ kbd { font-family: var(--mono); font-size: 11.5px; border: 1px solid var(--line)
       <button data-cmd="redo" title="Ctrl+Y">↷ 다시</button>
       <button data-cmd="del" title="Delete">지우기</button>
     </div>
+    <div class="grp">
+      <button data-cmd="cut" title="Ctrl+X">잘라내기</button>
+      <button data-cmd="copy" title="Ctrl+C">복사</button>
+      <button data-cmd="paste" title="Ctrl+V: 고른 블록 뒤에 붙입니다">붙여넣기</button>
+    </div>
   </header>
 
   <div class="main">
@@ -148,7 +148,7 @@ kbd { font-family: var(--mono); font-size: 11.5px; border: 1px solid var(--line)
       <div class="opts">
         <label><input type="checkbox" id="optSyntax" checked> 구문 강조</label>
         <label><input type="checkbox" id="optMono" checked> 고정폭 글꼴</label>
-        <label><input type="checkbox" id="optRanges"> 이름 붙은 범위 보기</label>
+        <label><input type="checkbox" id="optRanges"> 이름 붙은 영역 보기</label>
         <div class="zoom">
           <button data-cmd="zoomOut" aria-label="축소">−</button>
           <output id="zoomOut">100%</output>
@@ -166,38 +166,47 @@ kbd { font-family: var(--mono); font-size: 11.5px; border: 1px solid var(--line)
       <p>블록을 클릭해 고르고 키보드로 다룹니다. 오른쪽 클릭하면 메뉴가 나옵니다. 고친 내용은 이 브라우저에 남습니다.</p>
       <dl class="keys">
         <dt><kbd>↑</kbd> <kbd>↓</kbd></dt><dd>그림 순서대로 이동</dd>
-        <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>바깥 블록 / 안쪽 첫 블록</dd>
-        <dt><kbd>Shift</kbd>+클릭, <kbd>Shift</kbd>+<kbd>↑↓</kbd></dt><dd>범위 고르기 (같은 부모로 자동 확장)</dd>
+        <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>If 안에서는 건너편 갈래의 첫 블록으로. 왼쪽 갈래에서 <kbd>←</kbd>는 위쪽 바깥 블록, 오른쪽 갈래에서 <kbd>→</kbd>는 아래쪽 바깥 블록. 그 밖에서는 바깥 블록 / 안쪽 첫 블록</dd>
+        <dt><kbd>Shift</kbd>+클릭, <kbd>Shift</kbd>+<kbd>↑↓</kbd></dt><dd>영역 고르기 (같은 부모로 자동 확장)</dd>
         <dt><kbd>Enter</kbd> <kbd>F2</kbd> 더블클릭</dt><dd>글자 고치기 (줄바꿈은 <kbd>Shift</kbd>+<kbd>Enter</kbd>)</dd>
-        <dt><kbd>P</kbd> <kbd>I</kbd> <kbd>W</kbd> <kbd>D</kbd></dt><dd>처리 · If · While · Do-While 넣기. 위치는 도구 모음, <kbd>Shift</kbd>를 같이 누르면 앞에</dd>
-        <dt><kbd>O</kbd></dt><dd>넣을 위치 바꾸기 (뒤에 → 앞에 → 안쪽에)</dd>
+        <dt><kbd>P</kbd> <kbd>I</kbd> <kbd>W</kbd> <kbd>D</kbd></dt><dd>처리 · If · While · Do-While 넣기. 고른 블록 <b>뒤에</b> 넣고, <kbd>Shift</kbd>를 같이 누르면 <b>앞에</b> 넣습니다. 빈 블록을 골랐으면 그 자리에 넣습니다</dd>
+        <dt><kbd>Ctrl</kbd>+<kbd>X</kbd> / <kbd>C</kbd> / <kbd>V</kbd></dt><dd>잘라내기 / 복사 / 고른 블록 뒤에 붙여넣기</dd>
         <dt><kbd>E</kbd></dt><dd>이벤트 머리 달기·떼기</dd>
         <dt><kbd>S</kbd> 다음 <kbd>W</kbd>/<kbd>D</kbd>/<kbd>I</kbd></dt><dd>감싸기</dd>
         <dt><kbd>U</kbd></dt><dd>풀기</dd>
-        <dt><kbd>F</kbd></dt><dd>접기 · 펴기</dd>
+        <dt><kbd>F</kbd></dt><dd>접기 · 펴기 (제어 블록, 또는 블록 여러 개)</dd>
         <dt><kbd>H</kbd> / <kbd>Shift</kbd>+<kbd>H</kbd></dt><dd>강조 영역 만들기·넓히기 / 지우기</dd>
         <dt><kbd>Delete</kbd></dt><dd>지우기</dd>
         <dt><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Y</kbd></dt><dd>되돌리기 / 다시</dd>
         <dt><kbd>Ctrl</kbd>+휠</dt><dd>확대·축소</dd>
       </dl>
 
+      <h2>이번에 바뀐 것 (10-10 두 번째 판)</h2>
+      <ul class="qs">
+        <li><b>넣기 위치를 고르지 않습니다.</b> 늘 고른 블록 뒤에 넣고, <kbd>Shift</kbd>를 누르면 앞에 넣습니다. <kbd>O</kbd>와 "안쪽에"는 없앴습니다. 제어 블록 안에 넣으려면 안쪽 블록을 고르고 넣으세요. 빈 블록을 골랐으면 그 자리에 들어갑니다.</li>
+        <li><b>잘라내기 · 복사 · 붙여넣기.</b> 고른 블록(들) 뒤에 붙습니다. 이 페이지 안에서만 됩니다.</li>
+        <li><b><kbd>←</kbd> <kbd>→</kbd>로 If의 갈래를 건넙니다.</b> 갈래 안의 제어 블록에서도 <kbd>→</kbd>는 건너편으로 갑니다. 안으로 들어가려면 <kbd>↓</kbd>를 누르세요.</li>
+        <li><b>블록 하나는 접지 않습니다.</b> 제어 블록 하나는 전처럼 접힙니다.</li>
+        <li>화면 글자의 "범위"를 "영역"으로 바꿨습니다 (선택 영역, 이름 붙은 영역).</li>
+      </ul>
+
       <h2>만들며 생긴 질문</h2>
       <p>요구사항에 답이 없어서 프로토타입에서 임시로 정한 것들입니다. 써 보고 맞는지 알려 주세요.</p>
       <ol class="qs">
-        <li><b>펼친 뒤에도 이름 붙은 범위가 남습니다.</b> 이름을 모델에 두니(ADR-0017) 펼쳐도 범위가 보이지 않게 남아 있습니다. 위의 "이름 붙은 범위 보기"를 켜면 점선으로 보입니다. 평소에도 보여야 할까요? 지우는 방법은 "풀기"(<kbd>U</kbd>)로 해 두었습니다. <span class="ref">^edit-fold-range</span></li>
-        <li><b>기본 이름을 고른 경우.</b> 처음 접을 때 Enter·Esc로 기본 이름을 고르면, "이미 물어봤음"을 파일에 남겨야 다음에 묻지 않습니다. 그래서 이름 없이도 범위가 저장됩니다. <span class="ref">^edit-fold-range</span></li>
+        <li><b>펼친 뒤에도 이름 붙은 영역이 남습니다.</b> 이름을 모델에 두니(ADR-0017) 펼쳐도 영역이 보이지 않게 남아 있습니다. 위의 "이름 붙은 영역 보기"를 켜면 점선으로 보입니다. 평소에도 보여야 할까요? 지우는 방법은 "풀기"(<kbd>U</kbd>)로 해 두었습니다. <span class="ref">^edit-fold-range</span></li>
+        <li><b>기본 이름을 고른 경우.</b> 처음 접을 때 Enter·Esc로 기본 이름을 고르면, "이미 물어봤음"을 파일에 남겨야 다음에 묻지 않습니다. 그래서 이름 없이도 영역이 저장됩니다. <span class="ref">^edit-fold-range</span></li>
         <li><b>안쪽 깊은 곳에 강조 영역이 있으면?</b> While 안에 강조 영역이 있을 때 그 While을 포함해 강조하면, 넓힐 수도(부모가 다름) 새로 만들 수도(중첩 금지) 없습니다. 지금은 거절합니다. <span class="ref">^edit-region</span></li>
         <li><b>짧은 갈래의 빈 공간.</b> If의 두 갈래 높이가 다르면, 짧은 쪽 마지막 블록을 늘려 채웠습니다. 빈 칸을 따로 그리는 방법도 있습니다. <span class="ref">^lay-branch-width</span></li>
-        <li><b>넣기 단축키.</b> 위치(뒤·앞·안쪽)를 도구 모음에서 고르는 방식입니다. 브라우저가 Alt·Ctrl 조합을 많이 가져가서, 감싸기는 <kbd>S</kbd> 다음 글자를 누르는 두 번 누르기로 했습니다. <span class="ref">^edit-keyboard</span></li>
+        <li><b>넣기 단축키.</b> 뒤에 넣기가 기본이고 <kbd>Shift</kbd>를 누르면 앞에 넣습니다 (위치를 고르던 방식은 헷갈려서 없앰). 브라우저가 Alt·Ctrl 조합을 많이 가져가서, 감싸기는 <kbd>S</kbd> 다음 글자를 누르는 두 번 누르기로 했습니다. <span class="ref">^edit-keyboard</span></li>
         <li><b>고른 상태에서 바로 타자를 치면?</b> 엑셀처럼 바로 글자 고치기로 들어갈까요? 지금은 단축키로 쓰여서 아무 일도 없습니다. <span class="ref">^edit-basic</span></li>
-        <li><b>처리 블록 하나 접기.</b> 블록 하나를 <kbd>F</kbd>로 접으면 블록 하나짜리 범위가 생깁니다. 막을까요? <span class="ref">^edit-fold-range</span></li>
-        <li><b>접기는 되돌리기 대상이 아닙니다.</b> 접힘은 보기 상태라(ADR-0016) <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리지 않습니다. 단, 처음 접을 때 범위가 생기는 것은 되돌립니다. <span class="ref">^edit-undo</span></li>
+        <li><b>처리 블록 하나 접기.</b> 답을 받음: 막았습니다. 블록 하나만 고르고 <kbd>F</kbd>를 누르면 접지 않습니다. <span class="ref">^edit-fold-range</span></li>
+        <li><b>접기는 되돌리기 대상이 아닙니다.</b> 접힘은 보기 상태라(ADR-0016) <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리지 않습니다. 단, 처음 접을 때 영역이 생기는 것은 되돌립니다. <span class="ref">^edit-undo</span></li>
         <li><b>이벤트 머리 위치.</b> 머리는 다이어그램 맨 위 하나뿐이라 고르고 지울 수만 있고, 옮기거나 감쌀 수 없습니다. 머리 "뒤에" 넣으면 본문 맨 앞에 들어갑니다. <span class="ref">^blk-event</span></li>
         <li><b>블록 글자: 코드인가 문장인가.</b> 예제 두 개로 같은 로직을 비교해 보세요. 문장식에서는 구문 강조가 거의 하는 일이 없습니다. <span class="ref">미결정 사항</span></li>
       </ol>
 
       <h2>이 프로토타입에 없는 것</h2>
-      <p>Obsidian · 데스크톱 · Drive, 테마, PNG 내보내기, 정확한 텍스트 폭, 복사·붙여넣기, 드래그. 이 코드는 아키텍처 설계 전에 버립니다.</p>
+      <p>Obsidian · 데스크톱 · Drive, 테마, PNG 내보내기, 정확한 텍스트 폭, 드래그. 이 코드는 아키텍처 설계 전에 버립니다.</p>
       <p class="note">"받기"를 누르면 claude.ai가 저장할지 한 번 묻습니다. 받은 <code>diagram.ns.svg</code>를 "열기"로 다시 열어 보세요. 저장소의 <code>journal/assets/2026-10-10-ns-prototype.html</code>을 브라우저로 직접 열어도 됩니다.</p>
       <p>그림은 어두운 테마에서도 흰 종이에 그립니다. 저장되는 SVG의 색이 정해지지 않았기 때문입니다 (ADR-0013 열린 질문).</p>
     </aside>
@@ -263,7 +272,7 @@ function reindex() {
   walk(doc.body, null, 'body');
 }
 function normalize() {
-  // 빈 범위는 없애고, 빈 갈래는 빈 처리 블록으로 채운다 (^nfr-integrity)
+  // 빈 영역은 없애고, 빈 갈래는 빈 처리 블록으로 채운다 (^nfr-integrity)
   const fix = (list, mustFill) => {
     for (let i = list.length - 1; i >= 0; i--) {
       const n = list[i];
@@ -338,7 +347,7 @@ function ancestors(id) {
   return out;
 }
 function selectTo(id) {
-  // Shift+클릭: 두 블록을 함께 담는 가장 가까운 같은 부모 범위로 넓힌다 (ADR-0008)
+  // Shift+클릭: 두 블록을 함께 담는 가장 가까운 같은 부모 영역으로 넓힌다 (ADR-0008)
   if (!sel || sel.root === 'event' || id === 'event') return selectOne(id);
   const A = ancestors(sel.root), C = ancestors(id);
   for (const x of A) {
@@ -371,7 +380,7 @@ function move(key, shift) {
     const f = idx.get(sel.focus);
     const j = f.index + (key === 'ArrowDown' ? 1 : -1);
     if (j >= 0 && j < f.list.length) sel.focus = f.list[j].id;
-    else say('같은 부모 안에서만 범위를 넓힐 수 있습니다');
+    else say('같은 부모 안에서만 영역을 넓힐 수 있습니다');
     return render();
   }
   const cur = sel.focus, i = orderPos(order, cur);
@@ -380,14 +389,31 @@ function move(key, shift) {
   else if (key === 'ArrowUp') next = order[i - 1];
   else if (key === 'ArrowLeft') {
     if (cur === 'event') return;
-    let p = idx.get(cur).parent;
-    while (p && p.type === 'range') p = idx.get(p.id).parent;
-    next = p ? p.id : null;
+    const c = container(cur);
+    if (c && c.node.type === 'if' && c.slot === 'no') next = firstIn(c.node.yes);   // 건너편 갈래
+    else next = c ? c.node.id : null;                                                // 위쪽 바깥 블록
   } else if (key === 'ArrowRight') {
-    const cand = order[i + 1];
-    if (cand && cand !== 'event' && cur !== 'event' && ancestors(cand).includes(cur)) next = cand;
+    const c = cur === 'event' ? null : container(cur);
+    if (c && c.node.type === 'if' && c.slot === 'yes') next = firstIn(c.node.no);   // 건너편 갈래
+    else if (c && c.node.type === 'if')                                              // 아래쪽 바깥 블록
+      next = order.slice(orderPos(order, c.node.id) + 1).find(id => !ancestors(id).includes(c.node.id));
+    else {
+      const cand = order[i + 1];
+      if (cand && cand !== 'event' && cur !== 'event' && ancestors(cand).includes(cur)) next = cand;
+    }
   }
   if (next) { selectOne(next); render(); }
+}
+function container(id) {
+  // 영역은 건너뛰고, 이 블록을 담은 제어 블록과 갈래를 찾는다
+  let e = idx.get(id);
+  while (e && e.parent && e.parent.type === 'range') e = idx.get(e.parent.id);
+  return e && e.parent ? { node: e.parent, slot: e.slot } : null;
+}
+function firstIn(list) {
+  let n = list[0];
+  while (n.type === 'range' && !folded.has(n.id)) n = n.children[0];
+  return n.id;
 }
 
 /* ---------- 레이아웃 ---------- */
@@ -599,7 +625,7 @@ function describeSel() {
   const names = { process: '처리', if: 'If', while: 'While', dowhile: 'Do-While' };
   if (r.items.length === 1) {
     const n = r.items[0];
-    if (n.type === 'range') return (n.highlight ? '강조 영역' : '이름 붙은 범위') + (folded.has(n.id) ? ' (접힘)' : '');
+    if (n.type === 'range') return (n.highlight ? '강조 영역' : '이름 붙은 영역') + (folded.has(n.id) ? ' (접힘)' : '');
     return names[n.type] + (folded.has(n.id) ? ' (접힘)' : '');
   }
   return `${r.items.length}개 고름`;
@@ -662,7 +688,7 @@ function currentText(id) {
 function startEdit(id, o = {}) {
   if (!id) return;
   const n = id === 'event' ? null : idx.get(id)?.node;
-  if (n && n.type === 'range' && !folded.has(n.id)) return say('범위 이름은 접은 칸에서 고칩니다');
+  if (n && n.type === 'range' && !folded.has(n.id)) return say('영역 이름은 접은 칸에서 고칩니다');
   const box = T.get(id);
   if (!box) return;
   const orig = currentText(id);
@@ -680,7 +706,7 @@ function startEdit(id, o = {}) {
   growEditor();
   editor.focus();
   editor.select();
-  if (o.naming) say('접은 범위의 이름을 적으세요. Enter나 Esc는 기본 이름 그대로 둡니다');
+  if (o.naming) say('접은 영역의 이름을 적으세요. Enter나 Esc는 기본 이름 그대로 둡니다');
 }
 function growEditor() {
   const lines = editor.value.split('\n').length;
@@ -725,25 +751,59 @@ const needSel = () => { const r = selRange(); if (!r) say('먼저 블록을 고�
 function insert(kind, pos) {
   const r = selRange();
   if (r && r.event && pos === 'before') return say('이벤트 머리 앞에는 넣을 수 없습니다');
-  if (r && !r.event && pos === 'inside') {
-    const t = r.items.length === 1 ? r.items[0] : null;
-    if (!t || !(isCtrl(t) || t.type === 'range')) return say('안쪽에 넣으려면 제어 블록이나 범위 하나를 고르세요');
-  }
+  // 빈 처리 블록 하나를 골랐으면 그 자리를 쓴다: 처리는 바로 적고, 제어 블록은 그 자리에 바꿔 넣는다
+  const blank = r && !r.event && r.items.length === 1 && r.items[0].type === 'process' && !r.items[0].text ? r.items[0] : null;
+  if (blank && kind === 'process') { startEdit(blank.id); return say('빈 블록에 바로 적습니다'); }
   const node = mk(kind);
   apply(() => {
     if (!r || r.event) { doc.body.splice(r ? 0 : doc.body.length, 0, node); return; }
-    if (pos === 'after') r.list.splice(r.hi + 1, 0, node);
+    if (blank) r.list.splice(r.lo, 1, node);
     else if (pos === 'before') r.list.splice(r.lo, 0, node);
-    else {
-      const t = r.items[0];
-      const list = t.type === 'range' ? t.children : t[SLOTS[t.type][0]];
-      folded.delete(t.id);
-      if (list.length === 1 && list[0].type === 'process' && !list[0].text) list.splice(0, 1, node);
-      else list.unshift(node);
-    }
+    else r.list.splice(r.hi + 1, 0, node);
   });
   selectOne(node.id); render();
   startEdit(node.id, { fresh: true });
+}
+
+/* ---------- 복사 · 잘라내기 · 붙여넣기 (이 페이지 안에서만) ---------- */
+let clip = null;
+function copy(cut) {
+  const r = needSel();
+  if (!r) return;
+  if (r.event) return say('이벤트 머리는 복사할 수 없습니다');
+  clip = JSON.stringify(r.items);
+  if (cut) del();
+  say((cut ? '잘라냈습니다' : '복사했습니다') + '. Ctrl+V를 누르면 고른 블록 뒤에 붙습니다');
+}
+function reId(list, plain) {
+  // 붙여 넣을 사본에 새 id를 준다. 강조 영역 안에 붙일 때는 사본의 강조를 뗀다 (중첩 금지)
+  const out = [];
+  list.forEach(n => {
+    (SLOTS[n.type] || []).forEach(s => { n[s] = reId(n[s], plain); });
+    if (plain && isHL(n)) {
+      if (!('name' in n)) { out.push(...n.children); return; }
+      n.highlight = false;
+    }
+    n.id = nid();
+    out.push(n);
+  });
+  return out;
+}
+function paste() {
+  if (!clip) return say('붙일 것이 없습니다. 먼저 Ctrl+C나 Ctrl+X를 누르세요');
+  const r = selRange();
+  const at = r && !r.event ? r : null;
+  const inHL = !!(at && at.parent) && ancestors(at.parent.id).some(id => isHL(idx.get(id).node));
+  const nodes = reId(JSON.parse(clip), inHL);
+  apply(() => {
+    if (!at) { doc.body.splice(r ? 0 : doc.body.length, 0, ...nodes); return; }
+    const one = at.items.length === 1 ? at.items[0] : null;
+    if (one && one.type === 'process' && !one.text) at.list.splice(at.lo, 1, ...nodes);   // 빈 블록은 그 자리에
+    else at.list.splice(at.hi + 1, 0, ...nodes);
+  });
+  sel = { root: nodes[0].id, anchor: nodes[0].id, focus: nodes[nodes.length - 1].id };
+  render();
+  say(inHL ? '붙였습니다. 강조 영역 안이라 사본의 강조는 뗐습니다' : '붙였습니다');
 }
 function del() {
   const r = needSel();
@@ -787,7 +847,7 @@ function unwrap() {
   });
   if (content.length) sel = { root: content[0].id, anchor: content[0].id, focus: content[content.length - 1].id };
   render();
-  say(t.type === 'range' ? '범위를 풀었습니다. 이름과 강조도 함께 사라졌습니다' : '풀었습니다. 안의 블록은 그 자리에 남았습니다');
+  say(t.type === 'range' ? '영역을 풀었습니다. 이름과 강조도 함께 사라졌습니다' : '풀었습니다. 안의 블록은 그 자리에 남았습니다');
 }
 function foldRange(g, fresh) {
   const ask = !('name' in g);
@@ -808,6 +868,7 @@ function fold() {
   if (r.parent && r.parent.type === 'range' && r.lo === 0 && r.hi === r.list.length - 1) {
     const g = r.parent; selectOne(g.id); return foldRange(g, false);
   }
+  if (r.items.length === 1) return say('블록 하나는 접지 않습니다. 제어 블록이나 블록 여러 개를 고르세요');
   const g = { id: nid(), type: 'range', highlight: false, children: [] };
   apply(() => { g.children = r.list.splice(r.lo, r.hi - r.lo + 1); r.list.splice(r.lo, 0, g); });
   selectOne(g.id);
@@ -856,7 +917,7 @@ function unregion() {
   });
   if (!named) sel = { root: kids[0].id, anchor: kids[0].id, focus: kids[kids.length - 1].id };
   render();
-  say(named ? '강조를 지웠습니다. 이름 붙은 범위는 남았습니다' : '강조를 지웠습니다. 블록은 그대로입니다');
+  say(named ? '강조를 지웠습니다. 이름 붙은 영역은 남았습니다' : '강조를 지웠습니다. 블록은 그대로입니다');
 }
 function toggleEvent() {
   const on = doc.event == null;
@@ -865,11 +926,6 @@ function toggleEvent() {
   else { if (sel && sel.anchor === 'event') selectOne(null); render(); say('이벤트 머리를 뗐습니다'); }
 }
 function setZoom(z) { zoom = Math.min(3, Math.max(0.4, Math.round(z * 10) / 10)); render(); }
-function cyclePos() {
-  const p = $('#pos'), order = ['after', 'before', 'inside'];
-  p.value = order[(order.indexOf(p.value) + 1) % 3];
-  say('넣을 위치: ' + p.options[p.selectedIndex].text);
-}
 
 /* ---------- 예제 ---------- */
 function build(spec) {
@@ -949,6 +1005,7 @@ const COMMANDS = {
   svg: () => { $('#svgText').value = exportSVG(); $('#modal').hidden = false; $('#svgText').focus(); },
   download, exCode: () => loadExample('code'), exText: () => loadExample('text'),
   event: toggleEvent, unwrap, fold, region, unregion, undo, redo, del,
+  copy: () => copy(false), cut: () => copy(true), paste,
   zoomIn: () => setZoom(zoom + 0.1), zoomOut: () => setZoom(zoom - 0.1),
   closeModal: () => { $('#modal').hidden = true; stage.focus({ preventScroll: true }); },
   copySvg: () => {
@@ -958,18 +1015,18 @@ const COMMANDS = {
   },
   edit: () => { const r = needSel(); if (r) startEdit(r.event ? 'event' : sel.focus); }
 };
-function run(cmd) {
+function run(cmd, shift) {
   hideMenu();
   if (editing) commitEdit(false);
   const [name, arg] = cmd.split(':');
-  if (name === 'ins') insert(arg, $('#pos').value);
+  if (name === 'ins') insert(arg, shift ? 'before' : 'after');
   else if (name === 'wrap') wrap(arg);
   else COMMANDS[name]?.();
 }
 document.addEventListener('click', ev => {
   const b = ev.target.closest('button[data-cmd]');
   if (!b) { if (!ev.target.closest('.menu')) hideMenu(); return; }
-  run(b.dataset.cmd);
+  run(b.dataset.cmd, ev.shiftKey);
   if (!b.closest('.modal') && !editing && $('#modal').hidden) stage.focus({ preventScroll: true });
 });
 $('#file').addEventListener('change', ev => {
@@ -1013,10 +1070,10 @@ function showMenu(x, y) {
   menu.innerHTML = r && r.event
     ? it('edit', '글자 고치기', 'Enter') + it('ins:process', '본문 맨 앞에 처리 넣기', 'P') + '<hr>' + it('event', '이벤트 머리 떼기', 'E')
     : it('edit', '글자 고치기', 'Enter') + '<hr>' +
-      it('ins:process', '처리 넣기', 'P') + it('ins:if', 'If 넣기', 'I') + it('ins:while', 'While 넣기', 'W') + it('ins:dowhile', 'Do-While 넣기', 'D') + '<hr>' +
+      it('ins:process', '뒤에 처리 넣기', 'P') + it('ins:if', '뒤에 If 넣기', 'I') + it('ins:while', '뒤에 While 넣기', 'W') + it('ins:dowhile', '뒤에 Do-While 넣기', 'D') + '<hr>' +
       it('wrap:while', 'While로 감싸기', 'S W') + it('wrap:dowhile', 'Do-While로 감싸기', 'S D') + it('wrap:if', 'If로 감싸기', 'S I') + it('unwrap', '풀기', 'U') + '<hr>' +
       it('fold', '접기 · 펴기', 'F') + it('region', '강조', 'H') + it('unregion', '강조 지우기', '⇧H') + '<hr>' +
-      it('del', '지우기', 'Del');
+      it('cut', '잘라내기', 'Ctrl+X') + it('copy', '복사', 'Ctrl+C') + it('paste', '뒤에 붙여넣기', 'Ctrl+V') + it('del', '지우기', 'Del');
   menu.hidden = false;
   const mw = menu.offsetWidth, mh = menu.offsetHeight;
   menu.style.left = Math.min(x, innerWidth - mw - 8) + 'px';
@@ -1047,6 +1104,9 @@ document.addEventListener('keydown', ev => {
   if (ctrl) {
     if (code === 'KeyZ' && !ev.shiftKey) undo();
     else if (code === 'KeyY' || (code === 'KeyZ' && ev.shiftKey)) redo();
+    else if (code === 'KeyC') copy(false);
+    else if (code === 'KeyX') copy(true);
+    else if (code === 'KeyV') paste();
     else handled = false;
   } else if (ev.altKey) handled = false;
   else if (code.startsWith('Arrow')) move(code, ev.shiftKey);
@@ -1055,9 +1115,8 @@ document.addEventListener('keydown', ev => {
   else if (code === 'Escape') { hideMenu(); selectOne(null); render(); }
   else if (code === 'KeyP' || code === 'KeyI' || code === 'KeyW' || code === 'KeyD') {
     const kind = { KeyP: 'process', KeyI: 'if', KeyW: 'while', KeyD: 'dowhile' }[code];
-    insert(kind, ev.shiftKey ? 'before' : $('#pos').value);
+    insert(kind, ev.shiftKey ? 'before' : 'after');
   }
-  else if (code === 'KeyO') cyclePos();
   else if (code === 'KeyE') toggleEvent();
   else if (code === 'KeyS') { chord = 'S'; say('감싸기: W = While, D = Do-While, I = If'); }
   else if (code === 'KeyU') unwrap();
