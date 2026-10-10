@@ -42,6 +42,12 @@ updated: 2026-10-10
 - [ ] **다음 세션:** 프로토타입을 써 본 결과로 요구사항 점검. 프로토타입의 질문 10개에 답하고, 새 요구사항을 모은다. 답에 따라 프로토타입을 고친다
 	- [ ] 프로토타입에 드래그로 옮기기(블록 하나, 선택한 블록들) 넣기 → [[01-requirements#^edit-dnd]]
 	- [x] 프로토타입 화면 글자의 "이름 붙은 범위"를 "이름 붙은 영역"으로 바꾸기 (2026-10-10, 둘째 판)
+- [ ] 여러 다이어그램·호출 블록(2026-10-10 결정)을 뒤따르는 문서에 반영 → [[01-requirements#^edit-multi-diagram]], [[01-requirements#^blk-call]], [[01-requirements#^edit-extract]]
+	- [ ] ADR: 문서가 다이어그램 여러 개를 담는 방식과, 호출 블록이 다이어그램을 가리키는 방식 (id / 이름)
+	- [ ] [[01-file-format]]: 한 파일에 다이어그램 여러 개, 저장되는 그림의 배치
+	- [ ] [[06-glossary]]: 호출 블록, Method, 다이어그램(문서와 구분) 추가
+	- [ ] 설계 [[01-model]] · [[02-layout]]에 반영 (나란히 놓기)
+- [ ] 프로토타입 둘째·셋째 판을 써 본 결과 확인. 맞으면 inbox의 프로토타입 항목 네 개를 요구사항에 반영하고 지운다 (넣기 위치, 복사·붙여넣기 위치, 좌우 방향키, 블록 하나 접기)
 - [ ] 웹 베타를 출시할 때: 저장소 맨 위 `README.md`에 Buy Me a Coffee 후원 버튼 링크를 단다 → [[01-requirements#^all-donate]]
 - [ ] 나중에 검토: 유료 버전. Confluence는 요구사항에 #P2로 올림([[01-requirements#2.5 Confluence (유료, 나중에)]]). 다른 후보: Jira(같은 Forge로 묶음), Google Workspace Marketplace
 
@@ -54,6 +60,9 @@ updated: 2026-10-10
 - 모델 네임스페이스 URI → [[01-file-format#6. 미결정 사항]]
 - 블록 글자는 코드인가, 일반 문장인가 (구문 강조 방식이 갈림) → [[01-requirements#6. 미결정 사항]]
 - 저장된 SVG의 색: 고정 / 보는 환경의 테마를 따름 → [[0013-default-visual-style|ADR-0013]]
+- Method 다이어그램의 머리를 이벤트 머리와 다르게 그릴지, 모델에서 구분할지 → [[01-requirements#6. 미결정 사항]]
+- 호출 블록마다 다른 글자(예: 인자)를 적을 수 있어야 하는지. 프로토타입은 머리 글자를 그대로 따른다 → [[01-requirements#^blk-call]]
+- Google Drive 연동을 Obsidian · 데스크톱과 견주어 언제 만들지 → [[0011-development-order|ADR-0011]] "이후 변경"
 - 웹 광고의 자리: 광고 네트워크 정책이 "저장·내보내기·공유 때만"을 허용하는지 → [[01-requirements#6. 미결정 사항]]
 - 비공개 문제 알리기 채널: 이메일 / 폼 (웹 베타 무렵 결정) → [[01-requirements#^rep-issue]]
 - Obsidian "Insert new NS diagram" 세부: 새 파일 이름·위치, 빈 채로 닫았을 때, 저장 시점 → [[01-requirements#2.1 Obsidian 플러그인]]
