@@ -10,6 +10,9 @@ superseded-by:
 
 # ADR-0006: 확장자 `.ns` / `.ns.svg`
 
+> [!NOTE] 이후 변경
+> - 2026-10-10: Google Drive에서 만드는 파일의 확장자를 `.ns.svg`로 정했다 → [[0014-drive-file-extension|ADR-0014]]
+
 ## 배경
 
 [[0005-model-embedded-svg|ADR-0005]]에 따라 저장 파일은 모델 내장 SVG다. Obsidian에서는 노트에 그림으로 넣어야 하므로 `.svg`로 끝나야 하고, 데스크톱·웹에서는 일반 SVG와 구분되는 고유 확장자가 있으면 좋다.
@@ -44,7 +47,3 @@ superseded-by:
 
 - 좋아지는 점: 확장자 충돌 없음, 대상 간 이동이 쉬움
 - 감수하는 점: Obsidian에서 `.svg` 파일 열기 동작을 가로채는 방법을 검증해야 함 → [[02-architecture#7. 위험과 검증이 필요한 사항]]
-
-## 이후 변경
-
-- 2026-10-10: Google Drive에서 만드는 파일의 확장자를 `.ns.svg`로 정했다 → [[0014-drive-file-extension|ADR-0014]]
